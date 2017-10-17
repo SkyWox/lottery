@@ -18,7 +18,16 @@ class App extends Component {
 
   componentDidMount() {
     this.addTicket(false)
-    //put update of name and props here
+    /*
+    var requestURL = new Request('/api/lottolist')
+    fetch(requestURL)
+    .then(res => res.json())
+    .then(res => {
+      this.setState({
+      nameDrop : xx, propDrop})
+    })
+    .catch()
+    */
 
   }
 
