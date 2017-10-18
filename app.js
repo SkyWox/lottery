@@ -5,9 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //var freshCheck = require('./freshCheck.js');
-var lottolist = require('./routes/lottolist')
-var getnumbers = require('./routes/getnumbers')
-var specs = require('./routes/specs')
+var lottolist = require('./routes/lottolist.js')
+var getnumbers = require('./routes/getnumbers.js')
+var specs = require('./routes/specs.js')
 
 var app = express();
 
