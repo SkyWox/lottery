@@ -20,9 +20,9 @@ app.use(cookieParser());
 //serve static files from React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/api/lottolist', require('/routes/lottolist'));
-app.use('/api/getnumbers', require('/routes/getnumbers'));
-app.use('/api/specs', require('/routes/specs.js'));
+app.use('/api/lottolist', require('./routes/lottolist.js'));
+app.use('/api/getnumbers', require('./routes/getnumbers'));
+app.use('/api/specs', require('./routes/specs.js'));
 
 // Catchall
 app.get('*', (req, res) => {
