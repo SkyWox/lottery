@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //var freshCheck = require('./freshCheck.js');
-var lottolist = require('./routes/lottolist.js')
-var getnumbers = require('./routes/getnumbers.js')
-var specs = require('./routes/specs.js')
 
 var app = express();
 
@@ -23,9 +20,9 @@ app.use(cookieParser());
 //serve static files from React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/api/lottolist', lottolist);
-app.use('/api/getnumbers', getnumbers);
-app.use('/api/specs', specs);
+app.use('/api/lottolist', require('/routes/lottolist'));
+app.use('/api/getnumbers', require('/routes/getnumbers'));
+app.use('/api/specs', require('/routes/specs.js'));
 
 // Catchall
 app.get('*', (req, res) => {
