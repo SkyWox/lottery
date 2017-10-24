@@ -20,14 +20,7 @@ app.use(cookieParser());
 //serve static files from React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/api/lottolist', require('./routes/lottolist.js'));
-app.use('/api/getnumbers', require('./routes/getnumbers.js'));
-app.use('/api/specs', require('./routes/specs.js'));
-
-// Catchall
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+app.use(require('./routes'));
 
 const port = process.env.PORT || 5000;
 app.listen(port);

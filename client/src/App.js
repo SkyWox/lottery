@@ -51,7 +51,7 @@ class App extends Component {
 
     async getSpecs (name) {
       var specs = {}
-      await fetch('/api/specs?name=' + name)
+      await fetch('/specs?name=' + name)
       .then(res => res.json())
       .then(function(res){ specs = res })
       .catch()

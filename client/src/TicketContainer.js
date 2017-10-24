@@ -32,7 +32,7 @@ class TicketContainer extends Component {
 
   getPowerballSpecial = () => {
       const name = this.state.lottoname
-      var requestURL = new Request('/api/getnumbers?mint=' + this.props.mint + '&name=' + name + '&date=' + moment())
+      var requestURL = new Request('/getnumbers?mint=' + this.props.mint + '&name=' + name + '&date=' + moment())
       fetch(requestURL)
       .then(res => res.json())
       .then(res => this.setState({
