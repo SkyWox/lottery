@@ -7,7 +7,7 @@ class App extends Component {
     componentWillMount(){
       this.setState({
         //default list to speed loading
-        nameDrop : ['powerball', 'superlplus', 'megamill'],
+        nameDrop : ['powerball', 'superlplus', 'megamil'],
         propDrop : ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
         tickets : [],
       //can't use an async here or first render will be undefined
@@ -18,26 +18,22 @@ class App extends Component {
 
   componentDidMount() {
     this.addTicket(false)
-    /*
-    var requestURL = new Request('/api/lottolist')
+
+    var requestURL = new Request('/lottolist')
     fetch(requestURL)
     .then(res => res.json())
     .then(res => {
-      this.setState({
-      nameDrop : xx, propDrop})
+      console.log(res)
+      //this.setState({
+      //nameDrop : xx, propDrop})
     })
     .catch()
-    */
-
   }
 
-  async update(obj){
-    await this.setState(obj)
-    this.addTicket(false)
+  update(obj){
+    this.setState(obj, () => {this.addTicket(false)})
   }
 
-  //arrow functions preserve this binding for calling w/in components
-  //https://daveceddia.com/avoid-bind-when-passing-props/
     addTicket (mintBool) {
     var ticketArray = this.state.tickets
     ticketArray.push({
