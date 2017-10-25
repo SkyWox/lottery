@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import './App.css'
+import '../App.css'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TicketContainer from './TicketContainer.js'
 
 class App extends Component {
@@ -75,45 +76,47 @@ class App extends Component {
 		var currNameDrop = this.remove(this.state.nameDrop, this.state.lottoname)
 		var currPropDrop = this.remove(this.state.propDrop, this.state.proper)
 		return (
-			<div className="App">
-				<div>
-					<h1>
-						<div className="dropdown">
-							<button className="dropbtn">{this.state.proper}</button>
-							<div className="dropdown-content">
-								{currNameDrop.map((name, index) => (
-									<a
-										key={index}
-										onClick={() =>
-											this.update({
-												lottoname: currNameDrop[index],
-												proper: currPropDrop[index],
-												tickets: []
-											})}
-										value={name}>
-										{currPropDrop[index]}
-									</a>
-								))}
+			<Router>
+				<div className="App">
+					<div>
+						<h1>
+							<div className="dropdown">
+								<button className="dropbtn">{this.state.proper}</button>
+								<div className="dropdown-content">
+									{currNameDrop.map((name, index) => (
+										<a
+											key={index}
+											onClick={() =>
+												this.update({
+													lottoname: currNameDrop[index],
+													proper: currPropDrop[index],
+													tickets: []
+												})}
+											value={name}>
+											{currPropDrop[index]}
+										</a>
+									))}
+								</div>
 							</div>
-						</div>
-						Lucky Numbers
-					</h1>
-					{this.state.tickets.map((timestamp, index) => (
-						<TicketContainer
-							key={index}
-							num={index}
-							lottoname={this.state.lottoname}
-							mint={timestamp.mint}
-						/>
-					))}
-					<button className="addTicket" onClick={() => this.addTicket(false)}>
-						+ Add Ticket
-					</button>
-					<button className="addTicket" onClick={() => this.addTicket(true)}>
-						+ Add Fresh Ticket
-					</button>
+							Lucky Numbers
+						</h1>
+						{this.state.tickets.map((timestamp, index) => (
+							<TicketContainer
+								key={index}
+								num={index}
+								lottoname={this.state.lottoname}
+								mint={timestamp.mint}
+							/>
+						))}
+						<button className="addTicket" onClick={() => this.addTicket(false)}>
+							+ Add Ticket
+						</button>
+						<button className="addTicket" onClick={() => this.addTicket(true)}>
+							+ Add Fresh Ticket
+						</button>
+					</div>
 				</div>
-			</div>
+			</Router>
 		)
 	}
 }

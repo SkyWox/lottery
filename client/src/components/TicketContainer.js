@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import './App.css'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import '../App.css'
 import moment from 'moment'
 
 class TicketContainer extends Component {
@@ -70,7 +71,7 @@ class TicketContainer extends Component {
 					</button>
 				)}
 				<button className="shuffle" onClick={this.saveNums}>
-					Add to Watch List
+					<Link to="/watch">Add to Watch List</Link>
 				</button>
 				{this.props.mint && (
 					<button
