@@ -176,7 +176,6 @@ class InputWatch extends Component {
 									{this.lottoLogo()}
 									<NumberFormat
 										value={this.state.input}
-										default={[182229545708]}
 										format={this.state.format}
 										customInput={FormControl}
 										onChange={e => {
