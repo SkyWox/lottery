@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import '../App.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TicketContainer from './TicketContainer.js'
+import InputWatch from './InputWatch'
+import { Button, ButtonGroup } from 'react-bootstrap'
 
 class App extends Component {
 	componentWillMount() {
@@ -101,18 +103,22 @@ class App extends Component {
 							Lucky Numbers
 						</h1>
 						{this.state.tickets.map((timestamp, index) => (
-							<TicketContainer
-								key={index}
-								num={index}
-								lottoname={this.state.lottoname}
-								mint={timestamp.mint}
-							/>
+							<div key={index}>
+								<TicketContainer
+									ticketnum={index}
+									lottoname={this.state.lottoname}
+									mint={timestamp.mint}
+								/>
+								<Button color={'red'}>
+									<span color="red">X</span>
+								</Button>
+							</div>
 						))}
 						<button className="addTicket" onClick={() => this.addTicket(false)}>
 							+ Add Ticket
 						</button>
 						<button className="addTicket" onClick={() => this.addTicket(true)}>
-							+ Add Fresh Ticket
+							+ Add Mint Ticket
 						</button>
 					</div>
 				</div>

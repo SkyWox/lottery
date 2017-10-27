@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
-import {
-	BrowserRouter as Router,
-	Route,
-	Link,
-	Redirect
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../App.css'
 import moment from 'moment'
 
@@ -13,26 +8,16 @@ class TicketContainer extends Component {
 	state = {
 		vanilla: [],
 		special: 0,
-		ticketnum: 1,
+		num: 1,
 		showWhat: false
 	}
 
 	componentWillMount() {
-		this.setState({
-			lottoname: this.props.lottoname,
-			ticketnum: this.props.ticketnum
-		})
+		this.setState({ lottoname: this.props.lottoname, num: this.props.num })
 	}
 
 	componentWillReceiveProps() {
-		this.setState({
-			lottoname: this.props.lottoname,
-			ticketnum: this.props.ticketnum
-		})
-	}
-
-	componentDidMount() {
-		this.getNumbers()
+		this.setState({ lottoname: this.props.lottoname, num: this.props.num })
 	}
 
 	handleWhatisMint() {
@@ -41,27 +26,6 @@ class TicketContainer extends Component {
 		} else {
 			this.setState({ showWhat: true })
 		}
-	}
-
-	getNumbers = () => {
-		const name = this.state.lottoname
-		var requestURL = new Request(
-			'/getnumbers?mint=' +
-				this.props.mint +
-				'&name=' +
-				name +
-				'&date=' +
-				moment()
-		)
-		fetch(requestURL)
-			.then(res => res.json())
-			.then(res =>
-				this.setState({
-					special: res.special,
-					vanilla: res.vanilla
-				})
-			)
-			.catch()
 	}
 
 	shuffle = () => {
@@ -75,7 +39,7 @@ class TicketContainer extends Component {
 	render() {
 		return (
 			<div className="ticketContainer">
-				<span className="ticketTitle">Ticket {this.props.ticketnum + 1}</span>
+				<span className="ticketTitle">Ticket {this.props.ticketnum}</span>
 				{this.props.mint === false && (
 					<button className="shuffle" onClick={this.shuffle}>
 						Shuffle
@@ -85,13 +49,15 @@ class TicketContainer extends Component {
 					to={{
 						pathname: '/watch',
 						state: {
-							numbers: this.state.vanilla.concat(this.state.special),
-							lottoname: this.state.lottoname
+							numbers: this.props.vanilla.concat(this.props.special),
+							lottoname: this.props.lottoname
 						}
 					}}>
-					<button className="shuffle" onClick={this.saveNums}>
-						Add to Watch List
-					</button>
+					{this.props.watchlist === false && (
+						<button className="shuffle" onClick={this.saveNums}>
+							Add to Watchlist
+						</button>
+					)}
 				</Link>
 				{this.props.mint && (
 					<button
@@ -111,7 +77,7 @@ class TicketContainer extends Component {
 				<br />
 				<br />
 				<div className="numberContainer">
-					{this.state.vanilla.map((luckynum, index) => (
+					{this.props.vanilla.map((luckynum, index) => (
 						<li
 							name={this.props.lottoname}
 							key={index}
@@ -121,8 +87,8 @@ class TicketContainer extends Component {
 						</li>
 					))}
 					{/*only show if there is a special number*/}
-					{this.state.special !== 0 && (
-						<li className="numberCircle specialNum">{this.state.special}</li>
+					{this.props.special !== 0 && (
+						<li className="numberCircle specialNum">{this.props.special}</li>
 					)}
 				</div>
 			</div>
