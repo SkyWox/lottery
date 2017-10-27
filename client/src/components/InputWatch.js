@@ -60,8 +60,6 @@ class InputWatch extends Component {
 				drawDate = moment().add(1, 'days')
 				break
 		}
-		drawDate = drawDate.format('dddd MMM Do YYYY')
-
 		return drawDate
 	}
 
@@ -70,7 +68,8 @@ class InputWatch extends Component {
 		names.unshift(this.state.lottoname)
 
 		var dates = this.state.dates
-		dates.unshift(this.findNextDrawing())
+		var drawDate = this.findNextDrawing()
+		dates.unshift(drawDate.format('dddd MMM Do YYYY'))
 
 		var nums = this.parseInput(this.state.input)
 		var vanillanums = this.state.vanillanums
@@ -88,6 +87,18 @@ class InputWatch extends Component {
 			specialnums: specialnums,
 			input: ''
 		})
+
+		//submit to DB
+		var requestURL = new Request(
+			'/saveticket?lname=' +
+				this.state.lottoname +
+				'&nums=' +
+				nums +
+				'&draw=' +
+				drawDate.format('YYYYMMDD'),
+			{ method: 'POST' }
+		)
+		console.log(requestURL)
 	}
 
 	parseInput(input) {

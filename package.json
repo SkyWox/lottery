@@ -4,8 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node app.js",
-		"heroku-postbuild":
-			"cd client && npm install --only=dev && npm install && npm run build"
+		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
 	},
 	"dependencies": {
 		"async": "^2.5.0",
@@ -16,6 +15,7 @@
 		"jade": "~1.11.0",
 		"mongodb": "^2.2.31",
 		"morgan": "~1.8.1",
+		"pg": "^7.3.0",
 		"serve-favicon": "^2.4.5"
 	}
 }

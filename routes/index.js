@@ -5,10 +5,7 @@ var path = require('path')
 router.use('/lottolist', require('./lottolist.js'))
 router.use('/getnumbers', require('./getnumbers.js'))
 router.use('/specs', require('./specs.js'))
-
-router.get('/watch', (req, res) => {
-	res.sendFile(path.resolve('./client-watch/build/index.html'))
-})
+router.use('/saveticket', require('./saveticket.js'))
 
 // Catchall
 router.get('*', (req, res) => {
