@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router()
 
-var lottoGen = require('../lottoGen.js')
-var lottoSpecs = require('../lottoSpecs.js')
+var lottoGen = require('../../lottoGen.js')
+var lottoSpecs = require('../../lottoSpecs.js')
 
 router.get('/', (req, res) => {
 	//successfully getting fresh number

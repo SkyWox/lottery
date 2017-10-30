@@ -3,8 +3,10 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
+		"start:dev": "nodemon ./bin/www",
 		"start": "node app.js",
-		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+		"heroku-postbuild":
+			"cd client && npm install --only=dev && npm install && npm run build"
 	},
 	"dependencies": {
 		"async": "^2.5.0",
@@ -16,6 +18,12 @@
 		"mongodb": "^2.2.31",
 		"morgan": "~1.8.1",
 		"pg": "^7.3.0",
+		"pg-hstore": "^2.3.2",
+		"sequelize": "^4.20.1",
 		"serve-favicon": "^2.4.5"
+	},
+	"devDependencies": {
+		"dotenv": "^4.0.0",
+		"nodemon": "^1.12.1"
 	}
 }

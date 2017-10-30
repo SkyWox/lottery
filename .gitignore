@@ -1,5 +1,6 @@
 build
 node_modules
+bin
 server.csr
 server.key
 server.pass.key
