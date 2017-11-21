@@ -4,6 +4,7 @@ var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
+const cronJobs = require('./cronJobs')
 if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').load()
 }
@@ -46,5 +47,8 @@ app.use(function(err, req, res, next) {
 	res.status(err.status || 500)
 	res.render('error')
 })
+
+//CronJobs
+cronJobs.run()
 
 module.exports = app

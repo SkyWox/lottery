@@ -14,15 +14,19 @@ import {
 	Well
 } from 'react-bootstrap'
 import NumberFormat from 'react-number-format'
+import axios from 'axios'
 
 class InputWatch extends Component {
 	// Initialize state for powerball
 	state = {
+		userID: 1,
 		vanillanums: [],
 		specialnums: [],
 		lottonames: [],
 		dates: [],
+		saved: [],
 		input: '',
+		needhelp: false,
 		format: '## ## ## ## ## ##'
 	}
 
@@ -63,8 +67,22 @@ class InputWatch extends Component {
 		return drawDate
 	}
 
-	handleSubmit(e) {
+	shouldFormSubmit() {
+		if (this.getValidationState() === 'success') {
+			this.handleSubmit()
+			this.setState({
+				needhelp: false
+			})
+		} else {
+			this.setState({
+				needhelp: true
+			})
+		}
+	}
+
+	handleSubmit() {
 		var names = this.state.lottonames
+		var saved = this.state.saved
 		names.unshift(this.state.lottoname)
 
 		var dates = this.state.dates
@@ -72,6 +90,32 @@ class InputWatch extends Component {
 		dates.unshift(drawDate.format('dddd MMM Do YYYY'))
 
 		var nums = this.parseInput(this.state.input)
+		//clone nums because it is sync pop'd
+		const nums2 = nums.slice(0)
+
+		//submit to DB
+		axios
+			.post('/db/users/' + this.state.userID + '/tickets', {
+				numbers: nums2,
+				lottodate: drawDate.format('YYYY-MM-DD'),
+				lottoname: this.state.lottoname
+			})
+			.then(function(res) {
+				if (res.status === 201) {
+					saved.unshift(true)
+				} else {
+					saved.unshift(false)
+				}
+			})
+			.then(() => {
+				this.setState({
+					saved: saved
+				})
+			})
+			.catch(function(err) {
+				console.log(err)
+			})
+
 		var vanillanums = this.state.vanillanums
 		var specialnums = this.state.specialnums
 		if (this.state.specialflag === 1) {
@@ -87,19 +131,9 @@ class InputWatch extends Component {
 			specialnums: specialnums,
 			input: ''
 		})
-
-		//submit to DB
-		var requestURL = new Request(
-			'/saveticket?lname=' +
-				this.state.lottoname +
-				'&nums=' +
-				nums +
-				'&draw=' +
-				drawDate.format('YYYYMMDD'),
-			{ method: 'POST' }
-		)
-		console.log(requestURL)
 	}
+
+	removeTicket() {}
 
 	parseInput(input) {
 		return input
@@ -130,10 +164,6 @@ class InputWatch extends Component {
 			format: format,
 			minlength: numvanilla + numspecial
 		})
-	}
-
-	dontRefresh(e) {
-		e.preventDefault()
 	}
 
 	getValidationState() {
@@ -192,13 +222,22 @@ class InputWatch extends Component {
 										onChange={e => {
 											this.handleChange(e)
 										}}
-										onSubmit={e => {
-											this.dontRefresh(e)
+										onKeyDown={e => {
+											if (e.key === 'Enter') {
+												e.preventDefault()
+												this.shouldFormSubmit()
+											}
 										}}
 									/>
+									{this.state.needhelp && (
+										<span>
+											Please enter numbers in the format {this.state.format}
+											<br />
+										</span>
+									)}
 									<Button
 										onClick={e => {
-											this.handleSubmit(e)
+											this.shouldFormSubmit()
 										}}>
 										Add to Watch List
 									</Button>
@@ -216,6 +255,7 @@ class InputWatch extends Component {
 							numbers={this.state.vanillanums[index]}
 							special={this.state.specialnums[index]}
 							date={this.state.dates[index]}
+							saved={this.state.saved[index]}
 							watchlist={true}
 						/>
 					))}

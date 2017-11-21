@@ -1,7 +1,7 @@
-const todos = require('./todos')
-const todoItems = require('./todoitems')
+const users = require('./users')
+const tickets = require('./tickets')
 
 module.exports = {
-	todos,
-	todoItems
+	users,
+	tickets
 }

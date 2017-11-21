@@ -28,6 +28,7 @@ class ThinTicketContainer extends Component {
 				<span className="ticketTitle">
 					Ticket {this.props.ticketnum + 1} - Drawing on {this.props.date}
 				</span>
+				{this.props.saved && <div>Ticket successfully saved</div>}
 				{this.props.watchlist === false && (
 					<div>
 						{this.props.mint === false && (
