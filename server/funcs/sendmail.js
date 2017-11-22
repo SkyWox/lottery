@@ -1,10 +1,6 @@
 const http = require('http')
-var requireText = require('require-text')
 const ticketController = require('../controllers').tickets
-const someoneElseWon = requireText(
-	'../../emails/SorrySomeoneElseWon.html',
-	require
-)
+const constructHTML = require('./constructHTML')
 
 if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').load()
@@ -16,23 +12,41 @@ var mailgun = require('mailgun-js')
 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: DOMAIN })
 
 module.exports = {
-	send: function() {
-		var data = {
-			from: 'Excited User <me@samples.mailgun.org>',
-			to: 'lenin1916@gmail.com',
-			subject: 'Hello',
-			html: someoneElseWon
-		}
-
-		mailgun.messages().send(data, function(error, body) {
-			console.log(body)
-			if (error) {
-				res.status(400).send(error.message)
-			} else if (!error) {
-				res.status(200).send({
-					message: 'email sent'
-				})
+	send: function(email, username, lottoname, winningnums, yournums, potwon) {
+		return new Promise(function(resolve, reject) {
+			var template = ''
+			var subject = ''
+			if (!potwon) {
+				template = 'potincrease'
+				subject = username + ', you won the jackpot!'
+			} else if (winningnums === yournums) {
+				template = 'youwon'
+				subject = username + ', you won the jackpot!'
+			} else {
+				template = 'someoneElseWon'
+				subject = username + ', someone else won the jackpot '
 			}
+			var data = {
+				from: 'Excited User <me@samples.mailgun.org>',
+				to: email,
+				subject: subject,
+				html: constructHTML.build(
+					template,
+					username,
+					lottoname,
+					winningnums,
+					yournums
+				)
+			}
+			resolve(true)
+			/*mailgun.messages().send(data, function(error, body) {
+				console.log(body)
+				if (error) {
+					reject(error)
+				} else {
+					resolve(true)
+				}
+			})*/
 		})
 	}
 }

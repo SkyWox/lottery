@@ -130,6 +130,7 @@ module.exports = {
 	},
 
 	email(req) {
+		var res = {}
 		return Ticket.findAll({
 			where: {
 				winchecked: false,
@@ -140,7 +141,9 @@ module.exports = {
 				if (!Ticket) {
 					console.log('no ticket')
 				}
-				return Ticket
+				const result = Ticket.map(r => r.toJSON())
+				console.log(result)
+				return result
 			})
 			.then(updatedTicket => {
 				//return updatedTicket

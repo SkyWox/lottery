@@ -1,5 +1,6 @@
 var CronJob = require('cron').CronJob
-const fetchResults = require('./server/jobs/fetchResults.js')
+const contact = require('./server/jobs/contact.js')
+const updateResults = require('./server/jobs/updateResults.js')
 var moment = require('moment')
 
 module.exports = {
@@ -7,7 +8,11 @@ module.exports = {
 		var today = moment().format('YYYY-MM-DD')
 		//override today
 		today = '2017-11-08'
-		fetchResults.callModel('powerball', today, '{55, 55, 55, 55, 55, 55}')
+		updateResults.powerball()
+		//was the jackpot won?
+		var potwon = true
+		contact.email('powerball', today, '{55, 55, 55, 55, 55, 55}', potwon)
+
 		var fetchLottoResults = new CronJob(
 			'* * * * * *',
 			function() {
