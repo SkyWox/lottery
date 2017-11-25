@@ -16,14 +16,16 @@ router.get('/db', (req, res) =>
 	})
 )
 
-router.post('/db/users', userController.create)
+router.use('/db/users', require('./users.js'))
+
+/*router.post('/db/users', userController.create)
 router.get('/db/users', userController.list)
 router.get('/db/users/:userID', userController.retrieve)
 router.patch('/db/users/:userID', userController.update)
 router.delete('/db/users/:userID', userController.destroy)
 router.post('/db/users/:userID/tickets', ticketController.create)
 router.post('/db/users/:userID/tickets/:ticketID', ticketController.update)
-router.delete('/db/users/:userID/tickets/:ticketID', ticketController.destroy)
+router.delete('/db/users/:userID/tickets/:ticketID', ticketController.destroy)*/
 
 // For any other request method on user tickets, we're going to return "Method Not Allowed"
 router.all('/db/tickets/:userID/tickets', (req, res) =>
@@ -34,7 +36,8 @@ router.all('/db/tickets/:userID/tickets', (req, res) =>
 
 // Catchall
 router.get('*', (req, res) => {
-	res.sendFile(path.resolve('../../client/build/index.html'))
+	console.log(path)
+	res.sendFile(path.resolve('client/build/index.html'))
 })
 
 module.exports = router
