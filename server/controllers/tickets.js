@@ -13,23 +13,6 @@ module.exports = {
 			.catch(error => res.status(400).send(error))
 	},
 
-	fetchwinners(req, res) {
-		return Ticket.findAll({
-			where: {
-				numbers: req.body.winningnums,
-				lottoname: req.body.lottoname,
-				lottodate: req.body.lottodate
-			}
-		}).then(Ticket => {
-			if (!Ticket) {
-				return res.status(404).send({
-					message: 'Ticket Not Found'
-				})
-			}
-			return res.status(200).send(Ticket)
-		})
-	},
-
 	retrieve(req, res) {
 		return Ticket.findById(req.params.TicketID, {
 			include: [
@@ -100,58 +83,5 @@ module.exports = {
 					.catch(error => res.status(400).send(error))
 			})
 			.catch(error => res.status(400).send(error))
-	},
-
-	check(req, res) {
-		return Ticket.update(
-			{ winchecked: true, winner: true },
-			{
-				where: {
-					lottoname: req.body.lottoname,
-					lottodate: req.body.lottodate,
-					numbers: req.body.numbers,
-					winchecked: false
-				}
-			}
-		)
-			.spread(() => {
-				return Ticket.findAll({
-					where: {
-						lottoname: req.body.lottoname,
-						lottodate: req.body.lottodate,
-						numbers: req.body.numbers,
-						winchecked: true,
-						winner: true
-					}
-				})
-			})
-			.then(updatedTicket => res.status(200).send(updatedTicket))
-			.catch(error => res.status(400).send(error))
-	},
-
-	email(req) {
-		var res = {}
-		return Ticket.findAll({
-			where: {
-				winchecked: false,
-				winner: false
-			}
-		})
-			.then(Ticket => {
-				if (!Ticket) {
-					console.log('no ticket')
-				}
-				const result = Ticket.map(r => r.toJSON())
-				console.log(result)
-				return result
-			})
-			.then(updatedTicket => {
-				//return updatedTicket
-			})
-			.catch(
-				error => {
-					console.log(error)
-				} /*res.status(400).send(error)*/
-			)
 	}
 }

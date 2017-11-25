@@ -1,40 +1,58 @@
-var fs = require('fs')
 var axios = require('axios')
 const Powerball = require('../models').Powerball
 
 module.exports = {
 	powerball: function() {
-		axios({
+		return axios({
 			method: 'get',
 			url: 'http://www.powerball.com/powerball/winnums-text.txt',
 			responseType: 'text'
 		}).then(tsv => {
-			//var tsv is the TSV file with headers
-			console.log(tsv.toString())
-			var lines = tsv.toString().split('\n')
+			var lines = tsv.data.split('\n')
+			const date =
+				lines[1].slice(6, 10) +
+				'-' +
+				lines[1].slice(0, 2) +
+				'-' +
+				lines[1].slice(3, 5)
 
-			var result = []
+			const numbers =
+				'{' +
+				lines[1].slice(12, 14) +
+				', ' +
+				lines[1].slice(16, 18) +
+				', ' +
+				lines[1].slice(20, 22) +
+				', ' +
+				lines[1].slice(24, 26) +
+				', ' +
+				lines[1].slice(28, 30) +
+				', ' +
+				lines[1].slice(32, 34) +
+				'}'
 
-			var headers = lines[0].split('\t')
+			const powerplay = lines[1][36]
 
-			for (var i = 1; i < lines.length; i++) {
-				var obj = {}
-				var currentline = lines[i].split('\t')
+			/*Powerball.create({
+				date: date,
+				numbers: numbers,
+				powerplay: powerplay
+			})*/
 
-				for (var j = 0; j < headers.length; j++) {
-					obj[headers[j]] = currentline[j]
-				}
-
-				result.push(obj)
-			}
-
-			//return result; //JavaScript object
-			const final = JSON.stringify(result) //JSON
-			console.log(final)
+			return numbers
 		})
-		/*  Powerball.bulkCreate([
-  {date: 'programming', numbers: 'executing', powerplay: ''},
-  {date: 'programming', numbers: 'executing', powerplay: ''}
-  ])*/
+	},
+	detectFreq: function() {
+		var moment = require('moment')
+		return axios({
+			method: 'get',
+			url: 'http://www.powerball.com/powerball/winnums-text.txt',
+			responseType: 'text'
+		}).then(tsv => {
+			var lines = tsv.data.split('\n')
+			if (lines[1][3] === '2') {
+				console.log('changed at ' + moment().format('dddd, MMM Do, h:mm:ss a'))
+			}
+		})
 	}
 }

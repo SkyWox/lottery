@@ -8,21 +8,22 @@ module.exports = {
 		var today = moment().format('YYYY-MM-DD')
 		//override today
 		today = '2017-11-08'
-		updateResults.powerball()
-		//was the jackpot won?
-		var potwon = true
-		contact.email('powerball', today, '{55, 55, 55, 55, 55, 55}', potwon)
+		updateResults.powerball().then(winningnums => {
+			var potwon = true
+			contact.email('powerball', today, winningnums, potwon)
+		})
 
 		var fetchLottoResults = new CronJob(
-			'* * * * * *',
+			'0,5,10,15,20,25,30,35,40,45,50,55 * * * * *',
+			//drawing at 8pm
 			function() {
 				//fetch
-				fetchResults.logger()
+				updateResults.detectFreq()
 			},
 			function() {
-				//callback - mark lottery as checked
+				//callback
 			},
-			false, //don't start job now
+			false, //start job now?
 			'America/Los_Angeles' //timezone
 		)
 	}

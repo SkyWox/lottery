@@ -21,9 +21,6 @@ router.get('/db/users', userController.list)
 router.get('/db/users/:userID', userController.retrieve)
 router.patch('/db/users/:userID', userController.update)
 router.delete('/db/users/:userID', userController.destroy)
-
-router.post('/db/check', ticketController.check)
-
 router.post('/db/users/:userID/tickets', ticketController.create)
 router.post('/db/users/:userID/tickets/:ticketID', ticketController.update)
 router.delete('/db/users/:userID/tickets/:ticketID', ticketController.destroy)
