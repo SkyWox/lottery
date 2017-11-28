@@ -19,10 +19,6 @@ module.exports = {
 				type: Sequelize.DATEONLY,
 				allowNull: false
 			},
-			winchecked: {
-				type: Sequelize.BOOLEAN,
-				defaultValue: false
-			},
 			winner: {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false

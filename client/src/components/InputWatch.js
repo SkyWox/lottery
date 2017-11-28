@@ -3,6 +3,8 @@ import '../App.css'
 import moment from 'moment'
 import ThinTicketContainer from './ThinTicketContainer'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
+import LottoLogo from './LottoLogo'
+import LogIn from './LogIn'
 import {
 	Button,
 	ButtonGroup,
@@ -20,6 +22,7 @@ class InputWatch extends Component {
 	// Initialize state for powerball
 	state = {
 		userID: 1,
+		isLoggedIn: false,
 		vanillanums: [],
 		specialnums: [],
 		lottonames: [],
@@ -35,6 +38,19 @@ class InputWatch extends Component {
 			lottoname: this.props.lottoname,
 			numbers: this.props.numbers
 		})
+		sessionStorage.getItem('jwtToken')
+		axios
+			.post('/db/users/me/from/token', {
+				token: sessionStorage.getItem('jwtToken')
+			})
+			.then(res => {
+				if (res.status !== 200) {
+					console.log('token field error')
+				} else {
+					sessionStorage.setItem('jwtToken', res.data.token)
+					this.userlogin(res.data.user)
+				}
+			})
 	}
 
 	componentWillReceiveProps() {
@@ -46,6 +62,36 @@ class InputWatch extends Component {
 
 	handleChange(e) {
 		this.setState({ input: e.target.value })
+	}
+
+	userlogin(user) {
+		axios
+			.post('/db/users/' + user.userid, {
+				token: sessionStorage.getItem('jwtToken')
+			})
+			.then(res => {
+				var lottonames = []
+				var dates = []
+				var vanillas = []
+				var specials = []
+				var saved = []
+				res.data.tickets.forEach(function(ticket, i) {
+					lottonames.unshift(ticket.lottoname)
+					vanillas.unshift(ticket.numbers)
+					specials.unshift(8)
+					saved.unshift(true)
+					dates.unshift(moment(ticket.lottodate).format('dddd MMM Do YYYY'))
+				})
+				this.setState({
+					isLoggedIn: true,
+					userID: user.userid,
+					vanillanums: vanillas,
+					specialnums: specials,
+					lottonames: lottonames,
+					saved: saved,
+					dates: dates
+				})
+			})
 	}
 
 	findNextDrawing() {
@@ -98,7 +144,8 @@ class InputWatch extends Component {
 			.post('/db/users/' + this.state.userID + '/tickets', {
 				numbers: nums2,
 				lottodate: drawDate.format('YYYY-MM-DD'),
-				lottoname: this.state.lottoname
+				lottoname: this.state.lottoname,
+				token: sessionStorage.getItem('jwtToken')
 			})
 			.then(function(res) {
 				if (res.status === 201) {
@@ -180,12 +227,12 @@ class InputWatch extends Component {
 		switch (this.state.lottoname) {
 			case 'powerball':
 				source =
-					'http://www.arizonalottery.com/~/media/assets/branding/game-logos/powerball_gamelogo.ashx?mh=200'
+					'https://www.arizonalottery.com/~/media/assets/branding/game-logos/powerball_gamelogo.ashx?mh=200'
 				alternate = 'Powerball'
 				break
 			case 'megamil':
 				source =
-					'http://www.megamillions.com/Themes/MegaMillions/Content/Images/animation_logolarge.png'
+					'https://www.megamillions.com/Themes/MegaMillions/Content/Images/animation_logolarge.png'
 				alternate = 'Mega Millions'
 		}
 		return <img src={source} style={{ maxHeight: '60px' }} alt={alternate} />
@@ -198,6 +245,7 @@ class InputWatch extends Component {
 	render() {
 		return (
 			<div>
+				<LogIn isLoggedIn={true} />
 				<Well bsSize="large">
 					<form>
 						<FormGroup
@@ -214,7 +262,7 @@ class InputWatch extends Component {
 							</DropdownButton>
 							{this.state.lottoname && (
 								<div>
-									{this.lottoLogo()}
+									<LottoLogo lottoname={this.state.lottoname} />
 									<NumberFormat
 										value={this.state.input}
 										format={this.state.format}
@@ -250,7 +298,6 @@ class InputWatch extends Component {
 					{this.state.vanillanums.map((numbers, index) => (
 						<ThinTicketContainerWatch
 							key={index}
-							ticketnum={index}
 							lottoname={this.state.lottonames[index]}
 							numbers={this.state.vanillanums[index]}
 							special={this.state.specialnums[index]}

@@ -5,7 +5,7 @@ import TicketContainer from './TicketContainer.js'
 import InputWatch from './InputWatch'
 import { Button, ButtonGroup } from 'react-bootstrap'
 
-class App extends Component {
+class NumberApp extends Component {
 	componentWillMount() {
 		this.setState({
 			//default list to speed loading
@@ -93,7 +93,8 @@ class App extends Component {
 													lottoname: currNameDrop[index],
 													proper: currPropDrop[index],
 													tickets: []
-												})}
+												})
+											}
 											value={name}>
 											{currPropDrop[index]}
 										</a>
@@ -127,4 +128,4 @@ class App extends Component {
 	}
 }
 
-export default App
+export default NumberApp

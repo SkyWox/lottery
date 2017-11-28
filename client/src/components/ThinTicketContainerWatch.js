@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import '../App.css'
 import moment from 'moment'
+import LottoLogo from './LottoLogo'
 
 class ThinTicketContainer extends Component {
 	// Initialize state for powerball
@@ -26,7 +27,7 @@ class ThinTicketContainer extends Component {
 		return (
 			<div className="ticketContainer">
 				<span className="ticketTitle">
-					Ticket {this.props.ticketnum + 1} - Drawing on {this.props.date}
+					<LottoLogo lottoname={this.props.lottoname} /> -{this.props.date}
 				</span>
 				{this.props.saved && <div>Ticket successfully saved</div>}
 				{this.props.watchlist === false && (

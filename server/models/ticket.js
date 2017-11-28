@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
-		winchecked: {
-			type: DataTypes.BOOLEAN,
-			defaultValue: false
-		},
 		lottodate: {
 			type: DataTypes.STRING,
 			allowNull: false

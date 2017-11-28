@@ -9,6 +9,14 @@ h1 {
 	font-size: 42px;
 }
 
+.modal-container {
+	position: relative;
+}
+.modal-container .modal,
+.modal-container .modal-backdrop {
+	position: absolute;
+}
+
 .ticketContainer button {
 	list-style-type: none;
 	font-size: 12px;

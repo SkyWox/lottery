@@ -29,7 +29,7 @@ router.delete('/db/users/:userID/tickets/:ticketID', ticketController.destroy)*/
 
 // For any other request method on user tickets, we're going to return "Method Not Allowed"
 router.all('/db/tickets/:userID/tickets', (req, res) =>
-	res.status(405).send({
+	res.status(400).send({
 		message: 'Method Not Allowed'
 	})
 )

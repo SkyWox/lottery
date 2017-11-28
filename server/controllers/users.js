@@ -24,7 +24,7 @@ module.exports = {
 				[{ model: Ticket, as: 'tickets' }, 'createdAt', 'ASC']
 			]
 		})
-			.then(todos => res.status(200).send(todos))
+			.then(tickets => res.status(200).send(tickets))
 			.catch(error => res.status(400).send(error))
 	},
 
