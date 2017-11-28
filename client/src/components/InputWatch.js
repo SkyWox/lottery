@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import '../App.css'
 import moment from 'moment'
-import ThinTicketContainer from './ThinTicketContainer'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import LottoLogo from './LottoLogo'
 import LogIn from './LogIn'

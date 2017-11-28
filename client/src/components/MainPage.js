@@ -14,6 +14,11 @@ const MainPage = () => (
 				<Link to="/watch">
 					<Button>My Tickets</Button>
 				</Link>
+				{sessionStorage.getItem('jwtToken') ? (
+					<div>Logged In</div>
+				) : (
+					<div>Not Logged In</div>
+				)}
 			</ButtonGroup>
 
 			<Route exact path="/" component={NumberApp} />

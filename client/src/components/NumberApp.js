@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import '../App.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TicketContainer from './TicketContainer.js'
+import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import InputWatch from './InputWatch'
 import { Button, ButtonGroup } from 'react-bootstrap'
+import moment from 'moment'
 
 class NumberApp extends Component {
 	componentWillMount() {
@@ -12,7 +14,6 @@ class NumberApp extends Component {
 			nameDrop: ['powerball', 'superlplus', 'megamil'],
 			propDrop: ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
 			tickets: [],
-			//can't use an async here or first render will be undefined
 			lottoname: 'powerball',
 			proper: 'Powerball'
 		})
@@ -60,13 +61,30 @@ class NumberApp extends Component {
 
 	addTicket(mintBool) {
 		var ticketArray = this.state.tickets
-		ticketArray.push({
-			key: new Date().getTime(),
-			lottoname: this.state.lottoname,
-			mint: mintBool
-		})
+		const name = this.state.lottoname
+		var requestURL = new Request(
+			'/getnumbers?name=' + name + '&date=' + moment()
+		)
+		fetch(requestURL)
+			.then(res => res.json())
+			.then(res => {
+				ticketArray.push({
+					key: new Date().getTime(),
+					lottoname: this.state.lottoname,
+					vanillanums: res.vanilla,
+					specialnums: res.special,
+					alive: true,
+					mint: mintBool
+				})
+				this.setState({ tickets: ticketArray })
+			})
+			.catch()
+	}
 
-		this.setState({ tickets: ticketArray })
+	hideTicket(index) {
+		var ticketArray = this.state.tickets
+		ticketArray[index].alive = false
+		this.setState({ ticket: ticketArray })
 	}
 
 	remove(array, element) {
@@ -103,23 +121,29 @@ class NumberApp extends Component {
 							</div>
 							Lucky Numbers
 						</h1>
-						{this.state.tickets.map((timestamp, index) => (
+						{this.state.tickets.map((ticket, index) => (
 							<div key={index}>
-								<TicketContainer
-									ticketnum={index}
-									lottoname={this.state.lottoname}
-									mint={timestamp.mint}
-								/>
-								<Button color={'red'}>
-									<span color="red">X</span>
-								</Button>
+								{ticket.alive && (
+									<div>
+										<ThinTicketContainerWatch
+											ticketnum={index}
+											numbers={ticket.vanillanums}
+											special={ticket.specialnums}
+											lottoname={ticket.lottoname}
+											mint={ticket.mint}
+										/>
+
+										<Button
+											color={'red'}
+											onClick={() => this.hideTicket(index)}>
+											<span color="red">X</span>
+										</Button>
+									</div>
+								)}
 							</div>
 						))}
 						<button className="addTicket" onClick={() => this.addTicket(false)}>
 							+ Add Ticket
-						</button>
-						<button className="addTicket" onClick={() => this.addTicket(true)}>
-							+ Add Mint Ticket
 						</button>
 					</div>
 				</div>
