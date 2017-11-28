@@ -38,20 +38,24 @@ class InputWatch extends Component {
 			lottoname: this.props.lottoname,
 			numbers: this.props.numbers
 		})
-		sessionStorage.getItem('jwtToken')
-		axios
-			.post('/db/users/me/from/token', {
-				token: sessionStorage.getItem('jwtToken')
-			})
-			.then(res => {
-				if (res.status !== 200) {
-					console.log('token field error')
-					this.setState({ isLoggedIn: false })
-				} else {
-					sessionStorage.setItem('jwtToken', res.data.token)
-					this.userlogin(res.data.user)
-				}
-			})
+		let token = sessionStorage.getItem('jwtToken')
+		if (token) {
+			axios
+				.post('/db/users/me/from/token', {
+					token: sessionStorage.getItem('jwtToken')
+				})
+				.then(res => {
+					if (res.status !== 200) {
+						console.log('token field error')
+						this.setState({ isLoggedIn: false })
+					} else {
+						sessionStorage.setItem('jwtToken', res.data.token)
+						this.userlogin(res.data.user)
+					}
+				})
+		} else {
+			this.setState({ isLoggedIn: false })
+		}
 	}
 
 	componentWillReceiveProps() {
