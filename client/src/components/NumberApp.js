@@ -104,15 +104,17 @@ class NumberApp extends Component {
 				<div className="App">
 					{this.state.showIntro &&
 						!sessionStorage.getItem('jwtToken') && (
-							<Jumbotron>
-								<h1 style={{ textAlign: 'center' }}>Welcome!</h1>
-								<p>
-									This app saves your lottery tickets and emails you to let you
-									know if you won!
-								</p>
-								<p>It also generates random lottery numbers</p>
-								<Button onClick={() => this.hideIntro()}>Ok, got it</Button>
-							</Jumbotron>
+							<div style={{ textAlign: 'center' }}>
+								<Jumbotron>
+									<h1>Welcome!</h1>
+									<p>
+										This app saves your lottery tickets and emails you to let
+										you know if you won!
+									</p>
+									<p>It also generates random lottery numbers</p>
+									<Button onClick={() => this.hideIntro()}>Ok, got it</Button>
+								</Jumbotron>
+							</div>
 						)}
 					<h1 style={{ textAlign: 'center' }}>
 						<div className="dropdown">

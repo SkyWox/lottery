@@ -155,6 +155,9 @@ class InputWatch extends Component {
 			specialnums.unshift(0)
 		}
 		vanillanums.unshift(nums)
+		vanillanums.sort(function(a, b) {
+			return a - b
+		})
 
 		//submit to DB
 		axios
@@ -196,6 +199,9 @@ class InputWatch extends Component {
 			.split(' ')
 			.map(Number)
 			.filter(i => i)
+			.sort(function(a, b) {
+				return a - b
+			})
 	}
 
 	getInputFields(e) {
@@ -223,9 +229,9 @@ class InputWatch extends Component {
 	}
 
 	getValidationState() {
-		const length = this.parseInput(this.state.input).length
-		if (length === this.state.minlength) return 'success'
-		else if (length > 0) return 'error'
+		const parsedInput = this.parseInput(this.state.input)
+		if (parsedInput.length === this.state.minlength) return 'success'
+		else if (parsedInput.length > 0) return 'error'
 		return null
 	}
 
