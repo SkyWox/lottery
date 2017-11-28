@@ -17,7 +17,8 @@ class LogIn extends Component {
 			firstname: '',
 			lastname: '',
 			type: 'login',
-			needhelp: ''
+			needhelp: '',
+			noSubmit: true
 		})
 	}
 
@@ -87,6 +88,7 @@ class LogIn extends Component {
 							})
 						} else {
 							sessionStorage.setItem('jwtToken', res.data.token)
+							this.setState({ noSubmit: false })
 						}
 					})
 					.catch(err => {
@@ -94,12 +96,17 @@ class LogIn extends Component {
 					})
 				break
 			case 'create':
-				axios.post('/db/users/signup', {
-					email: this.state.email,
-					password: this.state.password,
-					firstname: this.state.firstname,
-					lastname: this.state.lastname
-				})
+				axios
+					.post('/db/users/signup', {
+						email: this.state.email,
+						password: this.state.password,
+						firstname: this.state.firstname,
+						lastname: this.state.lastname
+					})
+					.then(res => {
+						sessionStorage.setItem('jwtToken', res.data.token)
+						this.setState({ noSubmit: false })
+					})
 				break
 			default:
 				this.setState({
@@ -112,7 +119,7 @@ class LogIn extends Component {
 	render() {
 		return (
 			<div>
-				<Modal show={!this.props.isLoggedIn}>
+				<Modal show={!this.props.isLoggedIn && this.state.noSubmit}>
 					<Modal.Header>
 						<Modal.Title>
 							{this.state.type === 'login' && <div>Please Log In</div>}
@@ -152,6 +159,7 @@ class LogIn extends Component {
 
 												<FormControl
 													label="Password"
+													type="password"
 													value={this.state.input}
 													onChange={e => {
 														this.handlePassChange(e)

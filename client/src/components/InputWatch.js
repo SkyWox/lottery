@@ -23,7 +23,7 @@ class InputWatch extends Component {
 	// Initialize state for powerball
 	state = {
 		userID: 1,
-		isLoggedIn: false,
+		isLoggedIn: true,
 		vanillanums: [],
 		specialnums: [],
 		lottonames: [],
@@ -47,6 +47,7 @@ class InputWatch extends Component {
 			.then(res => {
 				if (res.status !== 200) {
 					console.log('token field error')
+					this.setState({ isLoggedIn: false })
 				} else {
 					sessionStorage.setItem('jwtToken', res.data.token)
 					this.userlogin(res.data.user)
