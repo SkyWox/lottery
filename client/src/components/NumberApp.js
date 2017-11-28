@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import '../App.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import TicketContainer from './TicketContainer.js'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import InputWatch from './InputWatch'
 import { Button, ButtonGroup } from 'react-bootstrap'

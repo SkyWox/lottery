@@ -4,16 +4,15 @@ import moment from 'moment'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import LottoLogo from './LottoLogo'
 import LogIn from './LogIn'
+import LogOut from './LogOut'
 import {
 	Button,
-	ButtonGroup,
 	ControlLabel,
 	FormControl,
 	FormGroup,
 	DropdownButton,
 	MenuItem,
-	Well,
-	Panel
+	Well
 } from 'react-bootstrap'
 import NumberFormat from 'react-number-format'
 import axios from 'axios'
@@ -30,6 +29,7 @@ class InputWatch extends Component {
 		saved: [],
 		input: '',
 		needhelp: false,
+		showLogOut: false,
 		format: '## ## ## ## ## ##'
 	}
 
@@ -38,6 +38,10 @@ class InputWatch extends Component {
 			lottoname: this.props.lottoname,
 			numbers: this.props.numbers
 		})
+		this.initialLogin()
+	}
+
+	initialLogin() {
 		let token = sessionStorage.getItem('jwtToken')
 		if (token) {
 			axios
@@ -82,8 +86,8 @@ class InputWatch extends Component {
 				var saved = []
 				res.data.tickets.forEach(function(ticket, i) {
 					lottonames.unshift(ticket.lottoname)
-					vanillas.unshift(ticket.numbers)
-					specials.unshift(8)
+					vanillas.unshift(ticket.vanillanums)
+					specials.unshift(ticket.specialnums)
 					saved.unshift(true)
 					dates.unshift(moment(ticket.lottodate).format('dddd MMM Do YYYY'))
 				})
@@ -187,8 +191,6 @@ class InputWatch extends Component {
 		})
 	}
 
-	removeTicket() {}
-
 	parseInput(input) {
 		return input
 			.split(' ')
@@ -227,9 +229,20 @@ class InputWatch extends Component {
 		return null
 	}
 
+	handleLogOut() {
+		this.setState({ showLogOut: true })
+		this.initialLogin()
+	}
+
 	render() {
 		return (
 			<div>
+				{this.state.isLoggedIn && (
+					<div>
+						<Button onClick={() => this.handleLogOut()}>LogOut</Button>
+					</div>
+				)}
+				{this.state.showLogOut && <LogOut />}
 				<LogIn isLoggedIn={this.state.isLoggedIn} />
 				<Well bsSize="large">
 					<form>
@@ -279,7 +292,6 @@ class InputWatch extends Component {
 						</FormGroup>
 					</form>
 				</Well>
-				<Panel header={this.logoGen} bsStyle="primary" />
 				<div>
 					{this.state.vanillanums.map((numbers, index) => (
 						<ThinTicketContainerWatch

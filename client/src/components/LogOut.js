@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Jumbotron } from 'react-bootstrap'
+import { Jumbotron, Modal } from 'react-bootstrap'
 
 class LogOut extends Component {
 	logout() {
@@ -10,9 +10,9 @@ class LogOut extends Component {
 		return (
 			<div>
 				{this.logout() && (
-					<Jumbotron>
+					<Modal>
 						<h1>Logout successful</h1>
-					</Jumbotron>
+					</Modal>
 				)}
 			</div>
 		)
