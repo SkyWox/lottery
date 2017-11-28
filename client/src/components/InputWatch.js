@@ -13,7 +13,8 @@ import {
 	FormGroup,
 	DropdownButton,
 	MenuItem,
-	Well
+	Well,
+	Panel
 } from 'react-bootstrap'
 import NumberFormat from 'react-number-format'
 import axios from 'axios'
@@ -274,6 +275,7 @@ class InputWatch extends Component {
 						</FormGroup>
 					</form>
 				</Well>
+				<Panel header={this.logoGen} bsStyle="primary" />
 				<div>
 					{this.state.vanillanums.map((numbers, index) => (
 						<ThinTicketContainerWatch
