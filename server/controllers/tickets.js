@@ -4,13 +4,18 @@ module.exports = {
 	create(req, res) {
 		return Ticket.create({
 			numbers: req.body.numbers,
+			vanillanums: req.body.vanillanums,
+			specialnums: req.body.specialnums,
 			lottoname: req.body.lottoname,
 			lottodate: req.body.lottodate,
 			winchecked: req.body.winchecked,
 			userID: req.params.userID
 		})
 			.then(Ticket => res.status(201).send(Ticket))
-			.catch(error => res.status(400).send(error))
+			.catch(error => {
+				console.log(error)
+				res.status(400).send(error)
+			})
 	},
 
 	retrieve(req, res) {

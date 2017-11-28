@@ -27,7 +27,7 @@ class ThinTicketContainer extends Component {
 		return (
 			<div className="ticketContainer">
 				<span className="ticketTitle">
-					<LottoLogo lottoname={this.props.lottoname} /> -{this.props.date}
+					<LottoLogo lottoname={this.props.lottoname} />- {this.props.date}
 				</span>
 				{this.props.saved && <div>Ticket successfully saved</div>}
 				{this.props.watchlist === false && (

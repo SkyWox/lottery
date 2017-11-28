@@ -138,11 +138,21 @@ class InputWatch extends Component {
 		var nums = this.parseInput(this.state.input)
 		//clone nums because it is sync pop'd
 		const nums2 = nums.slice(0)
+		var vanillanums = this.state.vanillanums
+		var specialnums = this.state.specialnums
+		if (this.state.specialflag === 1) {
+			specialnums.unshift(nums.pop())
+		} else {
+			specialnums.unshift(0)
+		}
+		vanillanums.unshift(nums)
 
 		//submit to DB
 		axios
 			.post('/db/users/' + this.state.userID + '/tickets', {
 				numbers: nums2,
+				vanillanums: nums,
+				specialnums: specialnums[0],
 				lottodate: drawDate.format('YYYY-MM-DD'),
 				lottoname: this.state.lottoname,
 				token: sessionStorage.getItem('jwtToken')
@@ -163,14 +173,6 @@ class InputWatch extends Component {
 				console.log(err)
 			})
 
-		var vanillanums = this.state.vanillanums
-		var specialnums = this.state.specialnums
-		if (this.state.specialflag === 1) {
-			specialnums.unshift(nums.pop())
-		} else {
-			specialnums.unshift(0)
-		}
-		vanillanums.unshift(nums)
 		this.setState({
 			lottonames: names,
 			dates: dates,
@@ -218,28 +220,6 @@ class InputWatch extends Component {
 		if (length === this.state.minlength) return 'success'
 		else if (length > 0) return 'error'
 		return null
-	}
-
-	lottoLogo() {
-		var source = ''
-		var alternate = ''
-
-		switch (this.state.lottoname) {
-			case 'powerball':
-				source =
-					'https://www.arizonalottery.com/~/media/assets/branding/game-logos/powerball_gamelogo.ashx?mh=200'
-				alternate = 'Powerball'
-				break
-			case 'megamil':
-				source =
-					'https://www.megamillions.com/Themes/MegaMillions/Content/Images/animation_logolarge.png'
-				alternate = 'Mega Millions'
-		}
-		return <img src={source} style={{ maxHeight: '60px' }} alt={alternate} />
-	}
-
-	saveState() {
-		//Save tickets to memory
 	}
 
 	render() {

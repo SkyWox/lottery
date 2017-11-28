@@ -4,6 +4,14 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
+		vanillanums: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		specialnums: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
 		lottodate: {
 			type: DataTypes.STRING,
 			allowNull: false

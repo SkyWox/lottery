@@ -11,6 +11,14 @@ module.exports = {
 				type: Sequelize.ARRAY(Sequelize.INTEGER),
 				allowNull: false
 			},
+			vanillanums: {
+				type: Sequelize.ARRAY(Sequelize.INTEGER),
+				allowNull: false
+			},
+			specialnums: {
+				type: Sequelize.INTEGER,
+				allowNull: false
+			},
 			lottoname: {
 				type: Sequelize.STRING,
 				allowNull: false

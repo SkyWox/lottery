@@ -101,7 +101,7 @@ class LogIn extends Component {
 					lastname: this.state.lastname
 				})
 				break
-			case 'forgot':
+			default:
 				this.setState({
 					needhelp: 'Sorry, that feature does not exist yet'
 				})

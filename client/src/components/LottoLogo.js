@@ -14,6 +14,11 @@ class LottoLogo extends Component {
 			case 'megamil':
 				source = megamillions
 				alternate = 'Mega Millions'
+				break
+			default:
+				source = powerball
+				alternate = 'Powerball'
+				break
 		}
 		return <img src={source} style={{ maxHeight: '60px' }} alt={alternate} />
 	}

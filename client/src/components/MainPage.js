@@ -1,18 +1,8 @@
 import React from 'react'
-import {
-	BrowserRouter as Router,
-	Route,
-	Link,
-	Redirect
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NumberApp from './NumberApp'
 import InputWatch from './InputWatch'
-import LogIn from './LogIn'
 import { Button, ButtonGroup } from 'react-bootstrap'
-
-function isLoggedIn() {
-	return true
-}
 
 const MainPage = () => (
 	<Router>
@@ -27,10 +17,7 @@ const MainPage = () => (
 			</ButtonGroup>
 
 			<Route exact path="/" component={NumberApp} />
-			<Route
-				path="/watch"
-				render={() => (isLoggedIn() ? <InputWatch /> : <LogIn />)}
-			/>
+			<Route path="/watch" component={InputWatch} />
 		</div>
 	</Router>
 )
