@@ -89,7 +89,7 @@ class InputWatch extends Component {
 					vanillas.unshift(ticket.vanillanums)
 					specials.unshift(ticket.specialnums)
 					saved.unshift(true)
-					dates.unshift(moment(ticket.lottodate).format('dddd MMM Do YYYY'))
+					dates.unshift(moment(ticket.lottodate).format('dddd, MMM Do YYYY'))
 				})
 				this.setState({
 					isLoggedIn: true,

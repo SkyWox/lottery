@@ -3,7 +3,7 @@ import '../App.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import InputWatch from './InputWatch'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Button, ButtonGroup, Jumbotron } from 'react-bootstrap'
 import moment from 'moment'
 
 class NumberApp extends Component {
@@ -14,7 +14,8 @@ class NumberApp extends Component {
 			propDrop: ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
 			tickets: [],
 			lottoname: 'powerball',
-			proper: 'Powerball'
+			proper: 'Powerball',
+			showIntro: true
 		})
 	}
 
@@ -90,6 +91,10 @@ class NumberApp extends Component {
 		return array.filter(e => e !== element)
 	}
 
+	hideIntro() {
+		this.setState({ showIntro: false })
+	}
+
 	render() {
 		//remove the current one so it's just the other lottos
 		var currNameDrop = this.remove(this.state.nameDrop, this.state.lottoname)
@@ -97,50 +102,63 @@ class NumberApp extends Component {
 		return (
 			<Router>
 				<div className="App">
-					<div>
-						<h1>
-							<div className="dropdown">
-								<button className="dropbtn">{this.state.proper}</button>
-								<div className="dropdown-content">
-									{currNameDrop.map((name, index) => (
-										<a
-											key={index}
-											onClick={() =>
-												this.update({
-													lottoname: currNameDrop[index],
-													proper: currPropDrop[index],
-													tickets: []
-												})
-											}
-											value={name}>
-											{currPropDrop[index]}
-										</a>
-									))}
-								</div>
+					{this.state.showIntro &&
+						!sessionStorage.getItem('jwtToken') && (
+							<Jumbotron>
+								<h1>Welcome!</h1>
+								<p>
+									This app saves your lottery tickets and emails you to let you
+									know if you won!
+								</p>
+								<p>It also generates random lottery numbers</p>
+								<Button onClick={() => this.hideIntro()}>Ok, got it</Button>
+							</Jumbotron>
+						)}
+					<h1 style={{ textAlign: 'center' }}>
+						<div className="dropdown">
+							<button className="dropbtn">{this.state.proper}</button>
+							<div className="dropdown-content">
+								{currNameDrop.map((name, index) => (
+									<a
+										key={index}
+										onClick={() =>
+											this.update({
+												lottoname: currNameDrop[index],
+												proper: currPropDrop[index],
+												tickets: []
+											})
+										}
+										value={name}>
+										{currPropDrop[index]}
+									</a>
+								))}
 							</div>
-							Lucky Numbers
-						</h1>
-						{this.state.tickets.map((ticket, index) => (
-							<div key={index}>
-								{ticket.alive && (
-									<div>
-										<ThinTicketContainerWatch
-											ticketnum={index}
-											numbers={ticket.vanillanums}
-											special={ticket.specialnums}
-											lottoname={ticket.lottoname}
-											mint={ticket.mint}
-										/>
-
+						</div>
+						Lucky Numbers
+					</h1>
+					{this.state.tickets.map((ticket, index) => (
+						<div key={index}>
+							{ticket.alive && (
+								<div>
+									<ThinTicketContainerWatch
+										ticketnum={index}
+										numbers={ticket.vanillanums}
+										special={ticket.specialnums}
+										lottoname={ticket.lottoname}
+										mint={ticket.mint}
+									/>
+									<div style={{ textAlign: 'center' }}>
 										<Button
 											color={'red'}
 											onClick={() => this.hideTicket(index)}>
-											<span color="red">X</span>
+											<span color="red">^ Delete ticket ^</span>
 										</Button>
 									</div>
-								)}
-							</div>
-						))}
+								</div>
+							)}
+						</div>
+					))}
+					<div style={{ textAlign: 'center' }}>
 						<button className="addTicket" onClick={() => this.addTicket(false)}>
 							+ Add Ticket
 						</button>
