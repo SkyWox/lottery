@@ -226,7 +226,7 @@ class InputWatch extends Component {
 	render() {
 		return (
 			<div>
-				<LogIn isLoggedIn={true} />
+				<LogIn isLoggedIn={this.state.isLoggedIn} />
 				<Well bsSize="large">
 					<form>
 						<FormGroup
