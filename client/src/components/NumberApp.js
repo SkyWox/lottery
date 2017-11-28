@@ -105,7 +105,7 @@ class NumberApp extends Component {
 					{this.state.showIntro &&
 						!sessionStorage.getItem('jwtToken') && (
 							<Jumbotron>
-								<h1>Welcome!</h1>
+								<h1 style={{ textAlign: 'center' }}>Welcome!</h1>
 								<p>
 									This app saves your lottery tickets and emails you to let you
 									know if you won!
