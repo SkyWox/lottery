@@ -22,6 +22,7 @@ class InputWatch extends Component {
 	state = {
 		userID: 1,
 		isLoggedIn: true,
+		tickets: [],
 		vanillanums: [],
 		specialnums: [],
 		lottonames: [],
@@ -299,16 +300,10 @@ class InputWatch extends Component {
 					</form>
 				</Well>
 				<div>
-					{this.state.vanillanums.map((numbers, index) => (
-						<ThinTicketContainerWatch
-							key={index}
-							lottoname={this.state.lottonames[index]}
-							numbers={this.state.vanillanums[index]}
-							special={this.state.specialnums[index]}
-							date={this.state.dates[index]}
-							saved={this.state.saved[index]}
-							watchlist={true}
-						/>
+					{this.state.tickets.map((ticket, index) => (
+						<div key={index}>
+							<ThinTicketContainerWatch ticket={ticket} />
+						</div>
 					))}
 				</div>
 			</div>

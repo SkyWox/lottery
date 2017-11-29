@@ -10,8 +10,8 @@ class ThinTicketContainer extends Component {
 
 	logoGen = (
 		<div>
-			<LottoLogo lottoname={this.props.lottoname} />
-			{this.props.date}
+			<LottoLogo lottoname={this.props.ticket.lottoname} />
+			{this.props.ticket.date}
 		</div>
 	)
 
@@ -25,17 +25,19 @@ class ThinTicketContainer extends Component {
 				{this.state.show && (
 					<Grid>
 						<Row className="show-grid">
-							<Col xs={7} md={5}>
+							<Col xs={12} sm={7} md={5}>
 								<Panel
 									className="bootstrap-overrides"
 									header={this.logoGen}
 									bsStyle={
-										this.props.lottoname === 'powerball' ? 'info' : 'success'
+										this.props.ticket.lottoname === 'powerball'
+											? 'info'
+											: 'success'
 									}>
 									<div className="numberContainer">
-										{this.props.numbers.map((number, index) => (
+										{this.props.ticket.vanillanums.map((number, index) => (
 											<li
-												name={this.props.lottoname}
+												name={this.props.ticket.lottoname}
 												key={index}
 												value={number}
 												className="numberCircle vanillaNum">
@@ -43,16 +45,16 @@ class ThinTicketContainer extends Component {
 											</li>
 										))}
 										{/*only show if there is a special number*/}
-										{this.props.special !== 0 && (
+										{this.props.ticket.specialnums !== 0 && (
 											<li className="numberCircle specialNum">
-												{this.props.special}
+												{this.props.ticket.specialnums}
 											</li>
 										)}
 									</div>
 								</Panel>
 							</Col>
 
-							<Col xs={1} md={1}>
+							<Col xs={1} md={1} xsHidden>
 								<Button style={{ height: '173px' }} onClick={() => this.hide()}>
 									X
 								</Button>

@@ -3,7 +3,8 @@ import '../App.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import InputWatch from './InputWatch'
-import { Button, ButtonGroup, Jumbotron } from 'react-bootstrap'
+import Intro from './Intro'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import moment from 'moment'
 
 class NumberApp extends Component {
@@ -12,9 +13,12 @@ class NumberApp extends Component {
 			//default list to speed loading
 			nameDrop: ['powerball', 'superlplus', 'megamil'],
 			propDrop: ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
+			currNameDrop: ['superlplus', 'megamil'],
+			currPropDrop: ['Super Lotto Plus', 'Mega Millions'],
 			tickets: [],
 			lottoname: 'powerball',
-			proper: 'Powerball'
+			proper: 'Powerball',
+			hideDropdown: true
 		})
 		if (!sessionStorage.getItem('hideIntro')) {
 			this.setState({ hideIntro: false })
@@ -24,7 +28,7 @@ class NumberApp extends Component {
 	}
 
 	componentDidMount() {
-		this.addTicket(false)
+		this.addTicket()
 		this.updateLottoSpecs()
 	}
 
@@ -57,13 +61,7 @@ class NumberApp extends Component {
 			.catch()
 	}
 
-	update(obj) {
-		this.setState(obj, () => {
-			this.addTicket(false)
-		})
-	}
-
-	addTicket(mintBool) {
+	addTicket() {
 		var ticketArray = this.state.tickets
 		const name = this.state.lottoname
 		var requestURL = new Request(
@@ -76,8 +74,7 @@ class NumberApp extends Component {
 					key: new Date().getTime(),
 					lottoname: this.state.lottoname,
 					vanillanums: res.vanilla,
-					specialnums: res.special,
-					mint: mintBool
+					specialnums: res.special
 				})
 				this.setState({ tickets: ticketArray })
 			})
@@ -93,58 +90,55 @@ class NumberApp extends Component {
 		sessionStorage.setItem('hideIntro', true)
 	}
 
+	handleDropDownClick(propDrop, nameDrop) {
+		this.setState(
+			{
+				lottoname: nameDrop,
+				proper: propDrop,
+				hideDropdown: true,
+				tickets: []
+			},
+			() => this.addTicket()
+		)
+	}
+
+	showDropDown() {
+		this.setState({ hideDropdown: false })
+	}
+
 	render() {
-		//remove the current one so it's just the other lottos
-		var currNameDrop = this.remove(this.state.nameDrop, this.state.lottoname)
-		var currPropDrop = this.remove(this.state.propDrop, this.state.proper)
 		return (
 			<Router>
 				<div className="App">
-					{!this.state.hideIntro &&
-						!sessionStorage.getItem('jwtToken') && (
-							<div style={{ textAlign: 'center' }}>
-								<Jumbotron>
-									<h1>Welcome!</h1>
-									<p>
-										This app saves your lottery tickets and emails you to let
-										you know if you won!
-									</p>
-									<p>It also generates random lottery numbers</p>
-									<Button onClick={() => this.hideIntro()}>Ok, got it</Button>
-								</Jumbotron>
-							</div>
-						)}
+					<Intro />
 					<h1 style={{ textAlign: 'center' }}>
 						<div className="dropdown">
-							<button className="dropbtn">{this.state.proper}</button>
-							<div className="dropdown-content">
-								{currNameDrop.map((name, index) => (
-									<a
-										key={index}
-										onClick={() =>
-											this.update({
-												lottoname: currNameDrop[index],
-												proper: currPropDrop[index],
-												tickets: []
-											})
-										}
-										value={name}>
-										{currPropDrop[index]}
-									</a>
-								))}
-							</div>
+							<button className="dropbtn" onClick={() => this.showDropDown()}>
+								{this.state.proper}
+							</button>
+							{!this.state.hideDropdown && (
+								<div className="dropdown-content">
+									{this.state.currPropDrop.map((propDrop, index) => (
+										<a
+											key={index}
+											onClick={() =>
+												this.handleDropDownClick(
+													propDrop,
+													this.state.currNameDrop[index]
+												)
+											}
+											value={propDrop}>
+											{propDrop}
+										</a>
+									))}
+								</div>
+							)}
 						</div>
 						Number Generator
 					</h1>
 					{this.state.tickets.map((ticket, index) => (
 						<div key={index}>
-							<ThinTicketContainerWatch
-								ticketnum={index}
-								numbers={ticket.vanillanums}
-								special={ticket.specialnums}
-								lottoname={ticket.lottoname}
-								mint={ticket.mint}
-							/>
+							<ThinTicketContainerWatch ticket={ticket} />
 						</div>
 					))}
 					<div style={{ textAlign: 'center' }}>
