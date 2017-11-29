@@ -14,9 +14,13 @@ class NumberApp extends Component {
 			propDrop: ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
 			tickets: [],
 			lottoname: 'powerball',
-			proper: 'Powerball',
-			showIntro: true
+			proper: 'Powerball'
 		})
+		if (!sessionStorage.getItem('hideIntro')) {
+			this.setState({ hideIntro: false })
+		} else {
+			this.setState({ hideIntro: true })
+		}
 	}
 
 	componentDidMount() {
@@ -73,7 +77,6 @@ class NumberApp extends Component {
 					lottoname: this.state.lottoname,
 					vanillanums: res.vanilla,
 					specialnums: res.special,
-					alive: true,
 					mint: mintBool
 				})
 				this.setState({ tickets: ticketArray })
@@ -81,18 +84,13 @@ class NumberApp extends Component {
 			.catch()
 	}
 
-	hideTicket(index) {
-		var ticketArray = this.state.tickets
-		ticketArray[index].alive = false
-		this.setState({ ticket: ticketArray })
-	}
-
 	remove(array, element) {
 		return array.filter(e => e !== element)
 	}
 
 	hideIntro() {
-		this.setState({ showIntro: false })
+		this.setState({ hideIntro: true })
+		sessionStorage.setItem('hideIntro', true)
 	}
 
 	render() {
@@ -102,7 +100,7 @@ class NumberApp extends Component {
 		return (
 			<Router>
 				<div className="App">
-					{this.state.showIntro &&
+					{!this.state.hideIntro &&
 						!sessionStorage.getItem('jwtToken') && (
 							<div style={{ textAlign: 'center' }}>
 								<Jumbotron>
@@ -140,24 +138,13 @@ class NumberApp extends Component {
 					</h1>
 					{this.state.tickets.map((ticket, index) => (
 						<div key={index}>
-							{ticket.alive && (
-								<div>
-									<ThinTicketContainerWatch
-										ticketnum={index}
-										numbers={ticket.vanillanums}
-										special={ticket.specialnums}
-										lottoname={ticket.lottoname}
-										mint={ticket.mint}
-									/>
-									<div style={{ textAlign: 'center' }}>
-										<Button
-											color={'red'}
-											onClick={() => this.hideTicket(index)}>
-											<span color="red">^ Delete ticket ^</span>
-										</Button>
-									</div>
-								</div>
-							)}
+							<ThinTicketContainerWatch
+								ticketnum={index}
+								numbers={ticket.vanillanums}
+								special={ticket.specialnums}
+								lottoname={ticket.lottoname}
+								mint={ticket.mint}
+							/>
 						</div>
 					))}
 					<div style={{ textAlign: 'center' }}>

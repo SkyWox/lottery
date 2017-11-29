@@ -1,0 +1,8 @@
+/* Bootstrap overrides only */
+/* Min box size for 7 nums is 335 px
+@media screen and (min-width: 800px) {
+	.bootstrap-overrides {
+		margin: 1% auto;
+		width: 25%;
+	}
+}*/
