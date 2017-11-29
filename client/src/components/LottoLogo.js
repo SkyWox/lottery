@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 const powerball = require('../images/powerball.png')
 const megamillions = require('../images/megamillions.png')
+const superlplus = require('../images/superlotto-plus.svg')
 class LottoLogo extends Component {
 	render() {
 		var source = ''
@@ -14,6 +15,10 @@ class LottoLogo extends Component {
 			case 'megamil':
 				source = megamillions
 				alternate = 'Mega Millions'
+				break
+			case 'superlplus':
+				source = superlplus
+				alternate = 'Super Lotto Plus'
 				break
 			default:
 				source = powerball

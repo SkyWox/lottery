@@ -134,7 +134,7 @@ class NumberApp extends Component {
 								))}
 							</div>
 						</div>
-						Lucky Numbers
+						Number Generator
 					</h1>
 					{this.state.tickets.map((ticket, index) => (
 						<div key={index}>
