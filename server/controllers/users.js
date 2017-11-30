@@ -1,13 +1,27 @@
 const User = require('../models').User
 const Ticket = require('../models').Ticket
+var bcrypt = require('bcrypt')
+const generateToken = require('../funcs/generateToken')
 
 module.exports = {
 	create(req, res) {
+		var body = req.body
+		var hash = bcrypt.hashSync(body.password.trim(), 10)
 		return User.create({
-			username: req.body.username,
-			email: req.body.email
+			email: body.email.trim(),
+			password: hash,
+			admin: false,
+			isEmailVerified: false,
+			contactwin: body.contactwin,
+			contactlose: body.contactlose
 		})
-			.then(User => res.status(201).send(User))
+			.then(User => {
+				var token = generateToken(User)
+				res.status(201).json({
+					user: User,
+					token: token
+				})
+			})
 			.catch(error => res.status(400).send(error))
 	},
 
@@ -64,7 +78,6 @@ module.exports = {
 					})
 				}
 				return User.update({
-					username: req.body.username || User.username,
 					email: req.body.email || User.email
 				})
 					.then(() => res.status(200).send(User))

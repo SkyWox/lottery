@@ -100,9 +100,8 @@ class LogIn extends Component {
 						contactlose: false
 					})
 					.then(res => {
-						sessionStorage.setItem('jwtToken', res.data.token)
 						this.setState({ noSubmit: false })
-						this.props.loginSuccess()
+						sessionStorage.setItem('jwtToken', res.data.token)
 					})
 				break
 			default:

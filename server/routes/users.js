@@ -9,26 +9,7 @@ const Ticket = require('../models').Ticket
 const userController = require('../controllers').users
 const ticketController = require('../controllers').tickets
 
-router.post('/signup', function(req, res, next) {
-	var body = req.body
-	var hash = bcrypt.hashSync(body.password.trim(), 10)
-	var user = new User({
-		firstname: body.firstname.trim(),
-		lastname: body.lastname.trim(),
-		email: body.email.trim(),
-		password: hash,
-		admin: false,
-		isEmailVerified: false
-	})
-	user.save(function(err, user) {
-		if (err) throw err
-		var token = generateToken(user)
-		res.json({
-			user: user,
-			token: token
-		})
-	})
-})
+router.post('/signup', userController.create)
 router.post('/signin', function(req, res, next) {
 	User.findOne({ where: { email: req.body.email } })
 		.then(user => {
