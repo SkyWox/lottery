@@ -17,6 +17,7 @@ class LogIn extends Component {
 			firstname: '',
 			lastname: '',
 			type: 'login',
+			loading: false,
 			needhelp: '',
 			noSubmit: true
 		})
@@ -74,6 +75,8 @@ class LogIn extends Component {
 	}
 
 	handleSubmit() {
+		this.setState({ loading: true })
+
 		switch (this.state.type) {
 			case 'login':
 				axios
@@ -89,6 +92,7 @@ class LogIn extends Component {
 						} else {
 							sessionStorage.setItem('jwtToken', res.data.token)
 							this.setState({ noSubmit: false })
+							this.props.loginSuccess()
 						}
 					})
 					.catch(err => {
@@ -106,6 +110,7 @@ class LogIn extends Component {
 					.then(res => {
 						sessionStorage.setItem('jwtToken', res.data.token)
 						this.setState({ noSubmit: false })
+						this.props.loginSuccess()
 					})
 				break
 			default:
@@ -208,15 +213,26 @@ class LogIn extends Component {
 										{this.state.needhelp}
 										<br />
 										<Button
-											onClick={e => {
-												this.shouldFormSubmit()
-											}}>
-											{this.state.type === 'login' && <div>Log In</div>}
-											{this.state.type === 'forgot' && (
-												<div>Reset Password</div>
-											)}
-											{this.state.type === 'create' && (
-												<div>Create Account</div>
+											disabled={this.state.loading}
+											onClick={
+												!this.state.loading
+													? e => {
+															this.shouldFormSubmit()
+														}
+													: null
+											}>
+											{this.state.loading ? (
+												'Loading...'
+											) : (
+												<div>
+													{this.state.type === 'login' && <div>Log In</div>}
+													{this.state.type === 'forgot' && (
+														<div>Reset Password</div>
+													)}
+													{this.state.type === 'create' && (
+														<div>Create Account</div>
+													)}
+												</div>
 											)}
 										</Button>
 									</FormGroup>

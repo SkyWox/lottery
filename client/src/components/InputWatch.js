@@ -218,7 +218,10 @@ class InputWatch extends Component {
 					</div>
 				)}
 				{this.state.showLogOut && <LogOut />}
-				<LogIn isLoggedIn={this.state.isLoggedIn} />
+				<LogIn
+					isLoggedIn={this.state.isLoggedIn}
+					loginSuccess={() => this.initialLogin()}
+				/>
 				<Well bsSize="large">
 					<form>
 						<FormGroup
