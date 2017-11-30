@@ -4,7 +4,6 @@ import moment from 'moment'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
 import LottoLogo from './LottoLogo'
 import LogIn from './LogIn'
-import LogOut from './LogOut'
 import {
 	Button,
 	ToggleButtonGroup,
@@ -37,6 +36,7 @@ class InputWatch extends Component {
 
 	onChange = emailPref => {
 		this.setState({ emailPref })
+		//post to dB [], [1], [2], [1,2], [2,1]
 	}
 
 	initialLogin() {
@@ -234,7 +234,7 @@ class InputWatch extends Component {
 			<div>
 				{this.state.isLoggedIn && (
 					<div>
-						<Button onClick={() => this.handleLogOut()}>LogOut</Button>
+						<Button onClick={() => this.handleLogOut()}>Log Out</Button>
 						<ToggleButtonGroup
 							type="checkbox"
 							value={this.state.emailPref}
@@ -244,7 +244,6 @@ class InputWatch extends Component {
 						</ToggleButtonGroup>
 					</div>
 				)}
-				{this.state.showLogOut && <LogOut />}
 				{!this.state.hideLoginModal && (
 					<LogIn
 						isLoggedIn={this.state.isLoggedIn}

@@ -2,18 +2,20 @@ import React, { Component } from 'react'
 import { Jumbotron, Modal } from 'react-bootstrap'
 
 class LogOut extends Component {
-	logout() {
-		sessionStorage.removeItem('jwtToken')
-		return true
+	state = { show: false }
+	logOut() {
+		if (sessionStorage.getItem('jwtToken')) {
+			sessionStorage.removeItem('jwtToken')
+			return true
+		} else return false
 	}
+
 	render() {
 		return (
 			<div>
-				{this.logout() && (
-					<Modal>
-						<h1>Logout successful</h1>
-					</Modal>
-				)}
+				<Modal show={this.logOut()} onHide={this.logOut}>
+					<h1>Logout successful</h1>
+				</Modal>
 			</div>
 		)
 	}
