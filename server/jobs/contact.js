@@ -27,10 +27,11 @@ module.exports = {
 			result.forEach(function(tick, i) {
 				User.findById(tick.userID).then(user => {
 					var userr = user.get({ plain: true })
+					const username = userr.email.substring(0, userr.email.indexOf('@'))
 					sendmail
 						.send(
 							userr.email,
-							userr.username,
+							username,
 							tick.lottoname,
 							winningnums,
 							tick.numbers,
@@ -61,10 +62,11 @@ module.exports = {
 			result.forEach(function(tick, i) {
 				User.findById(tick.userID).then(user => {
 					var userr = user.get({ plain: true })
+					const username = userr.email.substring(0, userr.email.indexOf('@'))
 					sendmail
 						.send(
 							userr.email,
-							userr.username,
+							username,
 							tick.lottoname,
 							winningnums,
 							tick.numbers,
