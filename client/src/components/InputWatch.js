@@ -218,7 +218,7 @@ class InputWatch extends Component {
 
 	handleLogOut() {
 		this.setState({ showLogOut: true })
-		this.initialLogin()
+		//this.initialLogin()
 	}
 
 	render() {

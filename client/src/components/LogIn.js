@@ -23,35 +23,43 @@ class LogIn extends Component {
 		})
 	}
 
-	getValidationState() {
-		if (this.state.email.length > 4) {
-			if (this.state.type === 'forgot') {
-				return 'success'
-			} else if (this.state.password.length > 4) {
-				if (this.state.type === 'login') {
-					return 'success'
-				} else {
-					if (this.state.firstname.length > 4 && this.state.lastname.length) {
-						return 'success'
+	getValidationState(loginFail) {
+		var valid = null
+		if (loginFail) {
+			valid = 'error'
+		} else {
+			if (this.state.email.length > 4) {
+				if (this.state.type === 'forgot') {
+					valid = 'success'
+				} else if (this.state.password.length > 4) {
+					if (this.state.type === 'login') {
+						valid = 'success'
+					} else {
+						if (this.state.firstname.length > 4 && this.state.lastname.length) {
+							valid = 'success'
+						}
 					}
 				}
 			}
-		} else {
-			return null
 		}
+		this.setState({ valid: valid })
 	}
 
 	handleEmailChange(e) {
 		this.setState({ email: e.target.value })
+		this.getValidationState()
 	}
 	handlePassChange(e) {
 		this.setState({ password: e.target.value })
+		this.getValidationState()
 	}
 	handleFirstChange(e) {
 		this.setState({ firstname: e.target.value })
+		this.getValidationState()
 	}
 	handleLastChange(e) {
 		this.setState({ lastname: e.target.value })
+		this.getValidationState()
 	}
 
 	switchToCreate() {
@@ -62,7 +70,7 @@ class LogIn extends Component {
 	}
 
 	shouldFormSubmit() {
-		if (this.getValidationState() === 'success') {
+		if (this.state.valid === 'success') {
 			this.handleSubmit()
 			this.setState({
 				needhelp: ''
@@ -85,9 +93,10 @@ class LogIn extends Component {
 						password: this.state.password
 					})
 					.then(res => {
-						if (res.status === 404) {
+						if (res.status === 204) {
+							this.getValidationState(true)
 							this.setState({
-								needhelp: res.data.message
+								needhelp: 'Email or password incorrect'
 							})
 						} else {
 							sessionStorage.setItem('jwtToken', res.data.token)
@@ -142,7 +151,7 @@ class LogIn extends Component {
 								<form>
 									<FormGroup
 										controlId="formBasicText"
-										validationState={this.getValidationState()}>
+										validationState={this.state.valid}>
 										<ControlLabel>Email</ControlLabel>
 										<FormControl
 											label="Email"

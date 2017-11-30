@@ -32,16 +32,15 @@ router.post('/signup', function(req, res, next) {
 router.post('/signin', function(req, res, next) {
 	User.findOne({ where: { email: req.body.email } })
 		.then(user => {
-			console.log(user.dataValues.firstname + user.dataValues.lastname)
 			if (!user) {
-				return res.status(404).json({
+				return res.status(204).json({
 					error: true,
 					message: 'Email or Password is Wrong'
 				})
 			}
 			bcrypt.compare(req.body.password, user.password, function(err, valid) {
 				if (!valid) {
-					return res.status(404).json({
+					return res.status(204).json({
 						error: true,
 						message: 'Email or Password is Wrong'
 					})
