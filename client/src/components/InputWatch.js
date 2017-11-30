@@ -7,6 +7,8 @@ import LogIn from './LogIn'
 import LogOut from './LogOut'
 import {
 	Button,
+	ToggleButtonGroup,
+	ToggleButton,
 	ControlLabel,
 	FormControl,
 	FormGroup,
@@ -33,6 +35,10 @@ class InputWatch extends Component {
 		this.initialLogin()
 	}
 
+	onChange = emailPref => {
+		this.setState({ emailPref })
+	}
+
 	initialLogin() {
 		let token = sessionStorage.getItem('jwtToken')
 		if (token) {
@@ -46,10 +52,16 @@ class InputWatch extends Component {
 						this.setState({ isLoggedIn: false })
 					} else {
 						sessionStorage.setItem('jwtToken', res.data.token)
-						this.setState({
-							isLoggedIn: true,
-							userID: res.data.user.userid
-						})
+						this.setState(
+							{
+								userID: res.data.user.userid,
+								emailPref: [1]
+								/*,
+							emailWin: res.data.user.emailwin ? 1 : null,
+							emailLose: res.data.user.emailLose ? 2 : null */
+							},
+							() => this.setState({ isLoggedIn: true })
+						)
 						this.fetchUserTickets(res.data.user)
 					}
 				})
@@ -215,6 +227,13 @@ class InputWatch extends Component {
 				{this.state.isLoggedIn && (
 					<div>
 						<Button onClick={() => this.handleLogOut()}>LogOut</Button>
+						<ToggleButtonGroup
+							type="checkbox"
+							value={this.state.emailPref}
+							onChange={this.onChange}>
+							<ToggleButton value={1}>Email me if I win</ToggleButton>
+							<ToggleButton value={2}>Email me if I lose</ToggleButton>
+						</ToggleButtonGroup>
 					</div>
 				)}
 				{this.state.showLogOut && <LogOut />}
