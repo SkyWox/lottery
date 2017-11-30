@@ -57,24 +57,16 @@ router.post('/signin', function(req, res, next) {
 		.catch(error => console.log(error))
 })
 
-//get current user from token
 router.post('/me/from/token', function(req, res, next) {
-	// check header or url parameters or post parameters for token
 	var token = req.body.token || req.query.token
 	if (!token) {
 		return res.status(402).json({ message: 'Must pass token' })
 	}
-	// Check token that was passed by decoding token using secret
 	jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
 		if (err) throw err
-		//return user using the id from w/in JWTToken
 		User.findById(user.id)
 			.then(user => {
 				user = getCleanUser(user)
-				//Note: you can renew token by creating new token(i.e.
-				//refresh it)w/ new expiration time at this point, but I’m
-				//passing the old token back.
-				// var token = utils.generateToken(user);
 				res.json({
 					user: user,
 					token: token
@@ -84,28 +76,21 @@ router.post('/me/from/token', function(req, res, next) {
 	})
 })
 
-//require auth before proceeding
 router.use((req, res, next) => {
-	console.log('Restricted Routes')
-	//let token = req.body.token
-	//if (!token) return next(); //if no token, continue
-
 	jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, user) {
 		if (err) {
-			console.log('error in gatekeeper')
 			return res.status(401).json({
 				success: false,
 				message: 'Please register Log in using a valid email to submit posts'
 			})
 		} else {
-			req.user = user //set the user to req so other routes can use it
+			req.user = user
 			next()
 		}
 	})
 })
 
 router.post('/:userID/', (req, res, next) => {
-	console.log('requesting info for user ' + req.params.userID)
 	return User.findById(req.params.userID, {
 		include: [
 			{
