@@ -7,6 +7,10 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
+			numbers: {
+				type: Sequelize.ARRAY(Sequelize.INTEGER),
+				allowNull: false
+			},
 			vanillanums: {
 				type: Sequelize.ARRAY(Sequelize.INTEGER),
 				allowNull: false

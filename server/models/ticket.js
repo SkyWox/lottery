@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
 	const Ticket = sequelize.define('Ticket', {
+		numbers: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
 		vanillanums: {
 			type: DataTypes.INTEGER,
 			allowNull: false
