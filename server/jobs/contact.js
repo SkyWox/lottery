@@ -25,26 +25,28 @@ module.exports = {
 			}
 			var result = ticket.map(r => r.toJSON())
 			result.forEach(function(tick, i) {
-				User.findById(tick.userID).then(user => {
-					var userr = user.get({ plain: true })
-					const username = userr.email.substring(0, userr.email.indexOf('@'))
-					sendmail
-						.send(
-							userr.email,
-							username,
-							tick.lottoname,
-							winningnums,
-							tick.numbers,
-							potwon
-						)
-						.then(resp => {
-							if (resp) {
-								console.log(i + 1 + ' emails sent to winners')
-								Ticket.update({ contacted: true }, { where: { id: tick.id } })
-							}
-						})
-						.catch(error => console.log(error.message))
-				})
+				User.findOne({ where: { userID: tick.userID, contactwin: true } }).then(
+					user => {
+						var userr = user.get({ plain: true })
+						const username = userr.email.substring(0, userr.email.indexOf('@'))
+						sendmail
+							.send(
+								userr.email,
+								username,
+								tick.lottoname,
+								winningnums,
+								tick.numbers,
+								potwon
+							)
+							.then(resp => {
+								if (resp) {
+									console.log(i + 1 + ' emails sent to winners')
+									Ticket.update({ contacted: true }, { where: { id: tick.id } })
+								}
+							})
+							.catch(error => console.log(error.message))
+					}
+				)
 			})
 		})
 		Ticket.findAll({
@@ -60,7 +62,9 @@ module.exports = {
 			}
 			var result = ticket.map(r => r.toJSON())
 			result.forEach(function(tick, i) {
-				User.findById(tick.userID).then(user => {
+				User.findOne({
+					where: { userID: tick.userID, contactlose: true }
+				}).then(user => {
 					var userr = user.get({ plain: true })
 					const username = userr.email.substring(0, userr.email.indexOf('@'))
 					sendmail

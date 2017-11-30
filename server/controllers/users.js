@@ -78,7 +78,9 @@ module.exports = {
 					})
 				}
 				return User.update({
-					email: req.body.email || User.email
+					email: req.body.email || User.email,
+					contactwin: req.body.contactwin,
+					contactlose: req.body.contactlose
 				})
 					.then(() => res.status(200).send(User))
 					.catch(error => res.status(400).send(error))

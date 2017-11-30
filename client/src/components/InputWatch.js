@@ -35,8 +35,23 @@ class InputWatch extends Component {
 	}
 
 	onChange = emailPref => {
-		this.setState({ emailPref })
-		//post to dB [], [1], [2], [1,2], [2,1]
+		var win = false
+		var lose = false
+		if (emailPref.indexOf(1) !== -1) win = true
+		if (emailPref.indexOf(2) !== -1) lose = true
+		axios
+			.patch('/db/users/' + this.state.userID, {
+				token: sessionStorage.getItem('jwtToken'),
+				contactwin: win,
+				contactlose: lose
+			})
+			.then(res => {
+				if (res.status !== 200) {
+					console.log('user update error')
+				} else {
+					this.setState({ emailPref })
+				}
+			})
 	}
 
 	initialLogin() {
@@ -61,13 +76,15 @@ class InputWatch extends Component {
 
 	fetchUserData(data) {
 		sessionStorage.setItem('jwtToken', data.token)
+
+		var emailPref = []
+		if (data.user.contactwin === true) emailPref.push(1)
+		if (data.user.contactlose === true) emailPref.push(2)
+
 		this.setState(
 			{
 				userID: data.user.userid,
-				emailPref: [1]
-				/*,
-			emailWin: res.data.user.emailwin ? 1 : null,
-			emailLose: res.data.user.emailLose ? 2 : null */
+				emailPref: emailPref
 			},
 			() => this.setState({ isLoggedIn: true })
 		)
