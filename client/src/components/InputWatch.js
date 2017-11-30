@@ -23,11 +23,6 @@ class InputWatch extends Component {
 		userID: 1,
 		isLoggedIn: true,
 		tickets: [],
-		vanillanums: [],
-		specialnums: [],
-		lottonames: [],
-		dates: [],
-		saved: [],
 		input: '',
 		needhelp: false,
 		showLogOut: false,
@@ -35,10 +30,6 @@ class InputWatch extends Component {
 	}
 
 	componentWillMount() {
-		this.setState({
-			lottoname: this.props.lottoname,
-			numbers: this.props.numbers
-		})
 		this.initialLogin()
 	}
 
@@ -55,7 +46,11 @@ class InputWatch extends Component {
 						this.setState({ isLoggedIn: false })
 					} else {
 						sessionStorage.setItem('jwtToken', res.data.token)
-						this.userlogin(res.data.user)
+						this.setState({
+							isLoggedIn: true,
+							userID: res.data.user.userid
+						})
+						this.fetchUserTickets(res.data.user)
 					}
 				})
 		} else {
@@ -63,146 +58,34 @@ class InputWatch extends Component {
 		}
 	}
 
-	componentWillReceiveProps() {
-		this.setState({
-			lottoname: this.props.lottoname,
-			numbers: this.props.numbers
-		})
-	}
-
-	handleChange(e) {
-		this.setState({ input: e.target.value })
-	}
-
-	userlogin(user) {
+	fetchUserTickets(user) {
 		axios
 			.post('/db/users/' + user.userid, {
 				token: sessionStorage.getItem('jwtToken')
 			})
 			.then(res => {
-				var lottonames = []
-				var dates = []
-				var vanillas = []
-				var specials = []
-				var saved = []
-				res.data.tickets.forEach(function(ticket, i) {
-					lottonames.unshift(ticket.lottoname)
-					vanillas.unshift(ticket.vanillanums)
-					specials.unshift(ticket.specialnums)
-					saved.unshift(true)
-					dates.unshift(moment(ticket.lottodate).format('dddd, MMM Do YYYY'))
-				})
-				this.setState({
-					isLoggedIn: true,
-					userID: user.userid,
-					vanillanums: vanillas,
-					specialnums: specials,
-					lottonames: lottonames,
-					saved: saved,
-					dates: dates
-				})
-			})
-	}
-
-	findNextDrawing() {
-		const dayOfWeek = moment().format('dddd')
-		var drawDate = dayOfWeek
-		switch (dayOfWeek) {
-			case 'Sunday':
-				drawDate = moment().add(3, 'days')
-				break
-			case 'Monday':
-			case 'Thursday':
-				drawDate = moment().add(2, 'days')
-				break
-			case 'Tuesday':
-			case 'Friday':
-				drawDate = moment().add(1, 'days')
-				break
-		}
-		return drawDate
-	}
-
-	shouldFormSubmit() {
-		if (this.getValidationState() === 'success') {
-			this.handleSubmit()
-			this.setState({
-				needhelp: false
-			})
-		} else {
-			this.setState({
-				needhelp: true
-			})
-		}
-	}
-
-	handleSubmit() {
-		var names = this.state.lottonames
-		var saved = this.state.saved
-		names.unshift(this.state.lottoname)
-
-		var dates = this.state.dates
-		var drawDate = this.findNextDrawing()
-		dates.unshift(drawDate.format('dddd MMM Do YYYY'))
-
-		var nums = this.parseInput(this.state.input)
-		//clone nums because it is sync pop'd
-		const nums2 = nums.slice(0)
-		var vanillanums = this.state.vanillanums
-		var specialnums = this.state.specialnums
-		if (this.state.specialflag === 1) {
-			specialnums.unshift(nums.pop())
-		} else {
-			specialnums.unshift(0)
-		}
-		vanillanums.unshift(nums)
-		vanillanums.sort(function(a, b) {
-			return a - b
-		})
-
-		//submit to DB
-		axios
-			.post('/db/users/' + this.state.userID + '/tickets', {
-				numbers: nums2,
-				vanillanums: nums,
-				specialnums: specialnums[0],
-				lottodate: drawDate.format('YYYY-MM-DD'),
-				lottoname: this.state.lottoname,
-				token: sessionStorage.getItem('jwtToken')
-			})
-			.then(function(res) {
-				if (res.status === 201) {
-					saved.unshift(true)
-				} else {
-					saved.unshift(false)
+				if (res.data.tickets) {
+					const tickets = res.data.tickets
+					//Best way to iterate over object & avoid scope issues
+					for (var i = 0; i < tickets.length; i++) {
+						this.addTicketToState(tickets[i], { saved: true })
+					}
 				}
 			})
-			.then(() => {
-				this.setState({
-					saved: saved
-				})
-			})
-			.catch(function(err) {
-				console.log(err)
-			})
-
-		this.setState({
-			lottonames: names,
-			dates: dates,
-			vanillanums: vanillanums,
-			specialnums: specialnums,
-			input: ''
-		})
 	}
 
-	parseInput(input) {
-		return input
-			.split(' ')
-			.map(Number)
-			.filter(i => i)
-			.sort(function(a, b) {
-				return a - b
-			})
+	addTicketToState(ticket, obj) {
+		var ticketArray = this.state.tickets
+		ticketArray.unshift({
+			key: ticketArray.length,
+			numbers: ticket.numbers,
+			vanillanums: ticket.vanillanums,
+			specialnums: ticket.specialnums,
+			lottodate: moment(ticket.lottodate).format('dddd, MMM Do YYYY'),
+			lottoname: ticket.lottoname,
+			saved: ticket.saved || obj.saved
+		})
+		this.setState({ tickets: ticketArray })
 	}
 
 	getInputFields(e) {
@@ -229,11 +112,96 @@ class InputWatch extends Component {
 		})
 	}
 
+	handleChange(e) {
+		this.setState({ input: e.target.value })
+	}
+
+	shouldFormSubmit() {
+		if (this.getValidationState() === 'success') {
+			this.handleSubmit()
+			this.setState({
+				needhelp: false
+			})
+		} else {
+			this.setState({
+				needhelp: true
+			})
+		}
+	}
+
 	getValidationState() {
 		const parsedInput = this.parseInput(this.state.input)
 		if (parsedInput.length === this.state.minlength) return 'success'
 		else if (parsedInput.length > 0) return 'error'
 		return null
+	}
+
+	handleSubmit() {
+		var drawDate = this.findNextDrawing()
+
+		const nums = this.parseInput(this.state.input)
+		var vanillanums = nums.slice(0)
+		var specialnums = 0
+
+		if (this.state.specialflag === 1) {
+			specialnums = vanillanums.pop()
+		}
+		vanillanums.sort(function(a, b) {
+			return a - b
+		})
+
+		//submit to DB
+		axios
+			.post('/db/users/' + this.state.userID + '/tickets', {
+				numbers: nums,
+				vanillanums: vanillanums,
+				specialnums: specialnums,
+				lottodate: drawDate,
+				lottoname: this.state.lottoname,
+				token: sessionStorage.getItem('jwtToken')
+			})
+			.then(res => {
+				var saved = false
+				if (res.status === 201) {
+					saved = true
+				}
+				this.addTicketToState(res.data, { saved: saved })
+			})
+			.catch(function(err) {
+				console.log(err)
+			})
+
+		this.setState({
+			input: ''
+		})
+	}
+
+	findNextDrawing() {
+		const dayOfWeek = moment().format('dddd')
+		var drawDate = moment().format('YYYY-MM-DD')
+		switch (dayOfWeek) {
+			case 'Sunday':
+				drawDate = moment().add(3, 'days')
+				break
+			case 'Monday':
+			case 'Thursday':
+				drawDate = moment().add(2, 'days')
+				break
+			case 'Tuesday':
+			case 'Friday':
+				drawDate = moment().add(1, 'days')
+				break
+			default:
+				drawDate = moment().format('YYYY-MM-DD')
+		}
+		return drawDate
+	}
+
+	parseInput(input) {
+		return input
+			.split(' ')
+			.map(Number)
+			.filter(i => i)
 	}
 
 	handleLogOut() {
