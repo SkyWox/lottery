@@ -14,8 +14,6 @@ class LogIn extends Component {
 		this.setState({
 			email: '',
 			password: '',
-			firstname: '',
-			lastname: '',
 			type: 'login',
 			loading: false,
 			needhelp: '',
@@ -32,13 +30,7 @@ class LogIn extends Component {
 				if (this.state.type === 'forgot') {
 					valid = 'success'
 				} else if (this.state.password.length > 4) {
-					if (this.state.type === 'login') {
-						valid = 'success'
-					} else {
-						if (this.state.firstname.length > 4 && this.state.lastname.length) {
-							valid = 'success'
-						}
-					}
+					valid = 'success'
 				}
 			}
 		}
@@ -51,14 +43,6 @@ class LogIn extends Component {
 	}
 	handlePassChange(e) {
 		this.setState({ password: e.target.value })
-		this.getValidationState()
-	}
-	handleFirstChange(e) {
-		this.setState({ firstname: e.target.value })
-		this.getValidationState()
-	}
-	handleLastChange(e) {
-		this.setState({ lastname: e.target.value })
 		this.getValidationState()
 	}
 
@@ -112,8 +96,8 @@ class LogIn extends Component {
 					.post('/db/users/signup', {
 						email: this.state.email,
 						password: this.state.password,
-						firstname: this.state.firstname,
-						lastname: this.state.lastname
+						contactwin: true,
+						contactlose: false
 					})
 					.then(res => {
 						sessionStorage.setItem('jwtToken', res.data.token)
@@ -140,7 +124,7 @@ class LogIn extends Component {
 								<div>Please Enter Your Email</div>
 							)}
 							{this.state.type === 'create' && (
-								<div>Please Enter Your Info</div>
+								<div>Welcome! Please sign up below</div>
 							)}
 						</Modal.Title>
 					</Modal.Header>
@@ -176,38 +160,6 @@ class LogIn extends Component {
 													value={this.state.input}
 													onChange={e => {
 														this.handlePassChange(e)
-													}}
-													onKeyDown={e => {
-														if (e.key === 'Enter') {
-															e.preventDefault()
-															this.shouldFormSubmit()
-														}
-													}}
-												/>
-											</div>
-										)}
-										{this.state.type === 'create' && (
-											<div>
-												<ControlLabel>First Name</ControlLabel>
-												<FormControl
-													label="Firstname"
-													value={this.state.input}
-													onChange={e => {
-														this.handleFirstChange(e)
-													}}
-													onKeyDown={e => {
-														if (e.key === 'Enter') {
-															e.preventDefault()
-															this.shouldFormSubmit()
-														}
-													}}
-												/>
-												<ControlLabel>Last Name</ControlLabel>
-												<FormControl
-													label="Lastname"
-													value={this.state.input}
-													onChange={e => {
-														this.handleLastChange(e)
 													}}
 													onKeyDown={e => {
 														if (e.key === 'Enter') {
