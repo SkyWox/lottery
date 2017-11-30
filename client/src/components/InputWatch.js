@@ -51,18 +51,7 @@ class InputWatch extends Component {
 						console.log('token field error')
 						this.setState({ isLoggedIn: false })
 					} else {
-						sessionStorage.setItem('jwtToken', res.data.token)
-						this.setState(
-							{
-								userID: res.data.user.userid,
-								emailPref: [1]
-								/*,
-							emailWin: res.data.user.emailwin ? 1 : null,
-							emailLose: res.data.user.emailLose ? 2 : null */
-							},
-							() => this.setState({ isLoggedIn: true })
-						)
-						this.fetchUserTickets(res.data.user)
+						this.fetchUserData(res.data)
 					}
 				})
 		} else {
@@ -70,10 +59,21 @@ class InputWatch extends Component {
 		}
 	}
 
-	fetchUserTickets(user) {
+	fetchUserData(data) {
+		sessionStorage.setItem('jwtToken', data.token)
+		this.setState(
+			{
+				userID: data.user.userid,
+				emailPref: [1]
+				/*,
+			emailWin: res.data.user.emailwin ? 1 : null,
+			emailLose: res.data.user.emailLose ? 2 : null */
+			},
+			() => this.setState({ isLoggedIn: true })
+		)
 		axios
-			.post('/db/users/' + user.userid, {
-				token: sessionStorage.getItem('jwtToken')
+			.post('/db/users/' + data.user.userid, {
+				token: data.token
 			})
 			.then(res => {
 				if (res.data.tickets) {
@@ -217,8 +217,16 @@ class InputWatch extends Component {
 	}
 
 	handleLogOut() {
-		this.setState({ showLogOut: true })
-		//this.initialLogin()
+		this.setState({
+			showLogOut: true,
+			isLoggedIn: false,
+			tickets: [],
+			hideLoginModal: true
+		})
+	}
+
+	reLogIn() {
+		this.setState({ hideLoginModal: false })
 	}
 
 	render() {
@@ -237,10 +245,15 @@ class InputWatch extends Component {
 					</div>
 				)}
 				{this.state.showLogOut && <LogOut />}
-				<LogIn
-					isLoggedIn={this.state.isLoggedIn}
-					loginSuccess={() => this.initialLogin()}
-				/>
+				{!this.state.hideLoginModal && (
+					<LogIn
+						isLoggedIn={this.state.isLoggedIn}
+						fetchUserData={data => this.fetchUserData(data)}
+					/>
+				)}
+				{this.state.hideLoginModal && (
+					<Button onClick={() => this.reLogIn()}>Log In</Button>
+				)}
 				<Well bsSize="large">
 					<form>
 						<FormGroup

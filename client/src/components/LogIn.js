@@ -99,9 +99,8 @@ class LogIn extends Component {
 								needhelp: 'Email or password incorrect'
 							})
 						} else {
-							sessionStorage.setItem('jwtToken', res.data.token)
 							this.setState({ noSubmit: false })
-							this.props.loginSuccess()
+							this.props.fetchUserData(res.data)
 						}
 					})
 					.catch(err => {
