@@ -23,6 +23,14 @@ module.exports = (sequelize, DataTypes) => {
 		isEmailVerified: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false
+		},
+		contactwin: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false
+		},
+		contactlose: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false
 		}
 	})
 	User.associate = models => {

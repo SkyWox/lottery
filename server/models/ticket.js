@@ -1,9 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
 	const Ticket = sequelize.define('Ticket', {
-		numbers: {
-			type: DataTypes.INTEGER,
-			allowNull: false
-		},
 		vanillanums: {
 			type: DataTypes.INTEGER,
 			allowNull: false
@@ -19,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
 		lottoname: {
 			type: DataTypes.STRING,
 			allowNull: false
+		},
+		nocontactreqd: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		winner: {
 			type: DataTypes.BOOLEAN,

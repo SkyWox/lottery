@@ -7,14 +7,6 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
-			firstname: {
-				type: Sequelize.STRING,
-				allowNull: false
-			},
-			lastname: {
-				type: Sequelize.STRING,
-				allowNull: false
-			},
 			email: {
 				type: Sequelize.STRING,
 				allowNull: false
@@ -28,6 +20,14 @@ module.exports = {
 				allowNull: false
 			},
 			isEmailVerified: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
+			contactwin: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false
+			},
+			contactlose: {
 				type: Sequelize.BOOLEAN,
 				allowNull: false
 			},
