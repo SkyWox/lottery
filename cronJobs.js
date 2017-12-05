@@ -19,8 +19,8 @@ module.exports = {
 		})*/
 
 		var fetchLottoResults = new CronJob(
-			'0,30 * * * * 3,6',
-			//drawing at 8pm
+			'0 0/1 19-23 ? * 3,6',
+			//drawing at 8pm PST
 			function() {
 				updateResults.mostRecent().then(currentDate => {
 					updateResults.scrapePBASP().then(answer => {
