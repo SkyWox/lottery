@@ -10,9 +10,9 @@ module.exports = {
 			attributes: ['date'],
 			order: [['date', 'DESC']]
 		}).then(entry => {
-			return moment(entry.get({ plain: true }).date.toGMTString()).format(
-				'YYYY-MM-DD'
-			)
+			return moment
+				.utc(entry.get({ plain: true }).date.toGMTString())
+				.format('YYYY-MM-DD')
 		})
 	},
 	pullFromText() {

@@ -18,25 +18,25 @@ module.exports = {
 			contact.email('powerball', today, winningnums, potwon)
 		})*/
 
-		updateResults.mostRecent() //date
-		/*updateResults.scrapePBASP().then(answer => {
-			updateResults
-				.updatePBDB(answer, true)
-				.then(res => console.log('Updated successfully'))
-				.catch(err => console.log('Error in update'))
-		})*/
-
 		var fetchLottoResults = new CronJob(
-			'0,5,10,15,20,25,30,35,40,45,50,55 * * * * *',
+			'0,30 * * * * 3,6',
 			//drawing at 8pm
 			function() {
-				//fetch
-				updateResults.detectFreq()
+				updateResults.mostRecent().then(currentDate => {
+					updateResults.scrapePBASP().then(answer => {
+						if (answer.dates.indexOf(currentDate) === -1) {
+							updateResults.updatePBDB(answer, true).then(() => {
+								console.log(
+									'updated scores at ' +
+										moment().format('MMM Do YYYY, h:mm:ss a')
+								)
+								updated = true
+							})
+						} else console.log('no updated score available')
+					})
+				})
 			},
-			function() {
-				//callback
-			},
-			false, //start job now?
+			true, //start job now?
 			'America/Los_Angeles' //timezone
 		)
 	}
