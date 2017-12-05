@@ -4,19 +4,14 @@ const updateResults = require('./server/jobs/updateResults.js')
 var moment = require('moment')
 
 module.exports = {
-	run: function() {
-		/* Only needed to load in scores from txt file
+	loadFromTxt() {
+		// Only needed if loading in scores from txt file
 		updateResults.pullFromText().then(res => {
 			updateResults.updatePBDB(res)
-		})*/
-
+		})
+	},
+	run() {
 		var today = moment().format('YYYY-MM-DD')
-		//override today
-		today = '2017-11-08'
-		/*updateResults.powerball().then(winningnums => {
-			var potwon = true
-			contact.email('powerball', today, winningnums, potwon)
-		})*/
 		var updated = false
 
 		var fetchLottoResults = new CronJob(
@@ -25,14 +20,20 @@ module.exports = {
 			function() {
 				if (updated === false) {
 					updateResults.mostRecent().then(currentDate => {
-						updateResults.scrapePBASP().then(answer => {
-							if (answer.dates.indexOf(currentDate) === -1) {
-								updateResults.updatePBDB(answer, true).then(() => {
+						updateResults.scrapePBASP().then(scraped => {
+							if (scraped.dates.indexOf(currentDate) === -1) {
+								updateResults.updatePBDB(scraped, true).then(() => {
 									console.log(
 										'updated scores at ' +
 											moment().format('MMM Do YYYY, h:mm:ss a')
 									)
 									updated = true
+									contact.email(
+										'powerball',
+										today,
+										scraped.numbers[0],
+										scraped.winner
+									)
 								})
 							} else console.log('no updated score available')
 						})

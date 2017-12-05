@@ -8,10 +8,10 @@ const User = require('../models').User
 const Op = require('sequelize').Op
 
 module.exports = {
-	logger: function() {
+	logger() {
 		console.log('fetchResults')
 	},
-	email: function(lottoname, lottodate, winningnums, potwon) {
+	email(lottoname, lottodate, winningnums, potwon) {
 		Ticket.findAll({
 			where: {
 				lottoname: lottoname,
