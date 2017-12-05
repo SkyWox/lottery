@@ -12,6 +12,7 @@ module.exports = {
 			var potwon = true
 			contact.email('powerball', today, winningnums, potwon)
 		})*/
+		updateResults.mostRecent().then(res => console.log(res))
 		updateResults.scrapePBASP().then(answer => {
 			updateResults
 				.updatePBDB(answer)

@@ -2,7 +2,20 @@ var axios = require('axios')
 const Powerball = require('../models').Powerball
 
 module.exports = {
-	powerball: function() {
+	mostRecent() {
+		var moment = require('moment')
+		return Powerball.findAll({
+			limit: 1,
+			plain: true,
+			attributes: ['date'],
+			order: [['date', 'DESC']]
+		}).then(entry => {
+			return moment(entry.get({ plain: true }).date.toGMTString()).format(
+				'YYYY-MM-DD'
+			)
+		})
+	},
+	powerball() {
 		return axios({
 			method: 'get',
 			url: 'http://www.powerball.com/powerball/winnums-text.txt',
@@ -36,7 +49,7 @@ module.exports = {
 			return numbers
 		})
 	},
-	detectFreq: function() {
+	detectFreq() {
 		var moment = require('moment')
 		return axios({
 			method: 'get',
