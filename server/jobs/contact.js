@@ -12,21 +12,23 @@ module.exports = {
 		console.log('fetchResults')
 	},
 	email(lottoname, lottodate, winningnums, potwon) {
-		Ticket.findAll({
-			where: {
-				lottoname: lottoname,
-				lottodate: lottodate,
-				numbers: winningnums,
-				contacted: false
-			}
-		}).then(ticket => {
-			if (!ticket) {
-				console.log('no tickets')
-			}
-			var result = ticket.map(r => r.toJSON())
-			result.forEach(function(tick, i) {
-				User.findOne({ where: { userID: tick.userID, contactwin: true } }).then(
-					user => {
+		if (potwon) {
+			Ticket.findAll({
+				where: {
+					lottoname: lottoname,
+					lottodate: lottodate,
+					numbers: winningnums,
+					contacted: false
+				}
+			}).then(ticket => {
+				if (!ticket) {
+					console.log('no tickets')
+				}
+				var result = ticket.map(r => r.toJSON())
+				result.forEach(function(tick, i) {
+					User.findOne({
+						where: { userID: tick.userID, contactwin: true }
+					}).then(user => {
 						var userr = user.get({ plain: true })
 						const username = userr.email.substring(0, userr.email.indexOf('@'))
 						sendmail
@@ -45,10 +47,10 @@ module.exports = {
 								}
 							})
 							.catch(error => console.log(error.message))
-					}
-				)
+					})
+				})
 			})
-		})
+		}
 		Ticket.findAll({
 			where: {
 				lottoname: lottoname,
