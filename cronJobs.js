@@ -12,6 +12,12 @@ module.exports = {
 			var potwon = true
 			contact.email('powerball', today, winningnums, potwon)
 		})*/
+		updateResults.scrapePBASP().then(answer => {
+			updateResults
+				.updatePBDB(answer)
+				.then(res => console.log('Updated successfully'))
+				.catch(err => console.log('Error in update'))
+		})
 
 		var fetchLottoResults = new CronJob(
 			'0,5,10,15,20,25,30,35,40,45,50,55 * * * * *',

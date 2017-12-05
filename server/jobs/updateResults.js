@@ -33,12 +33,6 @@ module.exports = {
 
 			const powerplay = lines[1][36]
 
-			/*Powerball.create({
-				date: date,
-				numbers: numbers,
-				powerplay: powerplay
-			})*/
-
 			return numbers
 		})
 	},
@@ -54,5 +48,60 @@ module.exports = {
 				console.log('changed at ' + moment().format('dddd, MMM Do, h:mm:ss a'))
 			}
 		})
+	},
+	scrapePBASP() {
+		const cheerio = require('cheerio')
+		return axios
+			.get('http://www.powerball.com/powerball/pb_nbr_history.asp')
+			.then(res => {
+				let $ = cheerio.load(res.data)
+
+				var scores = []
+				var drawing = []
+				var row = 0
+
+				$('tr[valign=middle]')
+					.find('td')
+					.each((i, elm) => {
+						let txt = $(elm).text()
+						if (txt.indexOf('/') !== -1) {
+							drawing = []
+							row = 0
+							dateSplit = txt.split('/')
+							if (dateSplit[1].length === 1) dateSplit[1] = '0' + dateSplit[1]
+							drawing[row] =
+								dateSplit[2] + '-' + dateSplit[0] + '-' + dateSplit[1]
+						} else if (Number(txt) !== 0) {
+							row++
+							drawing[row] = Number(txt)
+							if (row === 6) scores.push(drawing)
+						}
+					})
+				var winner = true
+				if (
+					$('td[bgcolor=#6699cc]')
+						.html()
+						.search('There were no jackpot winners') !== -1
+				) {
+					winner = false
+				}
+				return (answer = { winner: winner, scores: scores })
+			})
+	},
+
+	updatePBDB(results) {
+		return Powerball.upsert({
+			date: results.scores[0][0],
+			numbers: results.scores[0].splice(1),
+			powerplay: 10,
+			hadwinner: results.winner
+		})
+		for (var i = 1; i < results.scores.length; i++) {
+			return Powerball.upsert({
+				date: results.scores[i][0],
+				numbers: results.scores[i].splice(1),
+				powerplay: 10
+			})
+		}
 	}
 }
