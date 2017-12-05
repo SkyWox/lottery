@@ -15,7 +15,8 @@ class LogIn extends Component {
 			email: '',
 			password: '',
 			type: 'login',
-			loading: false,
+			loadingLogin: false,
+			loadingDemo: false,
 			needhelp: '',
 			noSubmit: true
 		})
@@ -67,7 +68,7 @@ class LogIn extends Component {
 	}
 
 	handleSubmit() {
-		this.setState({ loading: true })
+		this.setState({ loadingLogin: true })
 
 		switch (this.state.type) {
 			case 'login':
@@ -80,7 +81,8 @@ class LogIn extends Component {
 						if (res.status === 204) {
 							this.getValidationState(true)
 							this.setState({
-								needhelp: 'Email or password incorrect'
+								needhelp: 'Email or password incorrect',
+								loadingLogin: false
 							})
 						} else {
 							this.setState({ noSubmit: false })
@@ -110,6 +112,20 @@ class LogIn extends Component {
 				})
 				break
 		}
+	}
+
+	loginDemo() {
+		this.setState(
+			{
+				valid: 'success',
+				loadingDemo: true,
+				email: 'postmaster@mg.mintwins.com',
+				password: 'demopass'
+			},
+			() => {
+				this.handleSubmit()
+			}
+		)
 	}
 
 	render() {
@@ -172,15 +188,15 @@ class LogIn extends Component {
 										{this.state.needhelp}
 										<br />
 										<Button
-											disabled={this.state.loading}
+											disabled={this.state.loadingLogin}
 											onClick={
-												!this.state.loading
+												!this.state.loadingLogin
 													? e => {
 															this.shouldFormSubmit()
 														}
 													: null
 											}>
-											{this.state.loading ? (
+											{this.state.loadingLogin ? (
 												'Loading...'
 											) : (
 												<div>
@@ -198,12 +214,17 @@ class LogIn extends Component {
 								</form>
 							</Well>
 						</div>
+						<Button
+							disabled={this.state.loadingDemo}
+							bsStyle="primary"
+							bsSize="large"
+							onClick={() => this.loginDemo()}>
+							Try a Demo
+						</Button>
 						<div>
 							<Button bsStyle="link" onClick={() => this.switchToCreate()}>
 								Create an account
 							</Button>
-						</div>
-						<div>
 							<Button bsStyle="link" onClick={() => this.switchToForgot()}>
 								Forgot my email or password
 							</Button>
