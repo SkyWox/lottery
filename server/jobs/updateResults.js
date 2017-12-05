@@ -15,38 +15,35 @@ module.exports = {
 			)
 		})
 	},
-	powerball() {
+	pullFromText() {
 		return axios({
 			method: 'get',
 			url: 'http://www.powerball.com/powerball/winnums-text.txt',
 			responseType: 'text'
 		}).then(tsv => {
 			var lines = tsv.data.split('\n')
-			const date =
-				lines[1].slice(6, 10) +
-				'-' +
-				lines[1].slice(0, 2) +
-				'-' +
-				lines[1].slice(3, 5)
+			var numbers = []
+			var dates = []
+			var powerplay = []
+			for (var i = 1; i < lines.length - 1; i++) {
+				var subNumbers = []
+				for (var j = 12; j < 36; j = j + 4) {
+					subNumbers.push(Number(lines[i].slice(j, j + 2)))
+				}
 
-			const numbers =
-				'{' +
-				lines[1].slice(12, 14) +
-				', ' +
-				lines[1].slice(16, 18) +
-				', ' +
-				lines[1].slice(20, 22) +
-				', ' +
-				lines[1].slice(24, 26) +
-				', ' +
-				lines[1].slice(28, 30) +
-				', ' +
-				lines[1].slice(32, 34) +
-				'}'
+				numbers.push(subNumbers)
+				dates.push(
+					lines[i].slice(6, 10) +
+						'-' +
+						lines[i].slice(0, 2) +
+						'-' +
+						lines[i].slice(3, 5)
+				)
+				if (lines[i][36]) powerplay.push(Number(lines[i][36]))
+				else powerplay.push(0)
+			}
 
-			const powerplay = lines[1][36]
-
-			return numbers
+			return (answer = { dates: dates, numbers: numbers, powerplay: powerplay })
 		})
 	},
 	detectFreq() {
@@ -69,7 +66,8 @@ module.exports = {
 			.then(res => {
 				let $ = cheerio.load(res.data)
 
-				var scores = []
+				var dates = []
+				var numbers = []
 				var drawing = []
 				var row = 0
 
@@ -82,14 +80,22 @@ module.exports = {
 							row = 0
 							dateSplit = txt.split('/')
 							if (dateSplit[1].length === 1) dateSplit[1] = '0' + dateSplit[1]
-							drawing[row] =
-								dateSplit[2] + '-' + dateSplit[0] + '-' + dateSplit[1]
+							dates.push(dateSplit[2] + '-' + dateSplit[0] + '-' + dateSplit[1])
 						} else if (Number(txt) !== 0) {
-							row++
 							drawing[row] = Number(txt)
-							if (row === 6) scores.push(drawing)
+							if (row === 5) numbers.push(drawing)
+							row++
 						}
 					})
+
+				var powerplay = []
+				$('td[colspan=8]')
+					.find('span[class=cssNumber-18]')
+					.each((i, elm) => {
+						let txt = $(elm).text()
+						powerplay.push(txt[0])
+					})
+
 				var winner = true
 				if (
 					$('td[bgcolor=#6699cc]')
@@ -98,23 +104,35 @@ module.exports = {
 				) {
 					winner = false
 				}
-				return (answer = { winner: winner, scores: scores })
+				return (answer = {
+					winner: winner,
+					dates: dates,
+					numbers: numbers,
+					powerplay: powerplay
+				})
 			})
 	},
 
-	updatePBDB(results) {
-		return Powerball.upsert({
-			date: results.scores[0][0],
-			numbers: results.scores[0].splice(1),
-			powerplay: 10,
-			hadwinner: results.winner
+	updatePBDB(results, hasWinner) {
+		return new Promise(function(resolve, reject) {
+			var int = 0
+			if (hasWinner) {
+				Powerball.upsert({
+					date: results.dates[0],
+					numbers: results.numbers[0],
+					powerplay: results.powerplay[0],
+					hadwinner: results.winner
+				})
+				int = 1
+			}
+			for (var i = int; i < results.numbers.length; i++) {
+				Powerball.upsert({
+					date: results.dates[i],
+					numbers: results.numbers[i],
+					powerplay: results.powerplay[i]
+				})
+			}
+			resolve(true)
 		})
-		for (var i = 1; i < results.scores.length; i++) {
-			return Powerball.upsert({
-				date: results.scores[i][0],
-				numbers: results.scores[i].splice(1),
-				powerplay: 10
-			})
-		}
 	}
 }
