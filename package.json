@@ -32,7 +32,8 @@
 	},
 	"devDependencies": {
 		"dotenv": "^4.0.0",
-		"nodemon": "^1.12.5"
+		"nodemon": "^1.12.5",
+		"prettier": "^1.9.1"
 	},
 	"nodemonConfig": {
 		"ignore": [
