@@ -15,7 +15,7 @@ module.exports = {
     var updated = false
 
     var fetchLottoResults = new CronJob(
-      '00 */1 19-23 * * 3,6',
+      '00 */1 20-23 * * 3,6',
       //drawing at 8pm PST
       function() {
         if (updated === false) {
