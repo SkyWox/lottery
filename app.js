@@ -11,6 +11,15 @@ if (process.env.NODE_ENV !== 'production') {
 
 var app = express()
 
+app.disable('x-powered-by') //hide server tech
+//set security headers
+app.use(function(req, res, next) {
+  res.header('X-XSS-Protection', '1; mode=block')
+  res.header('X-Frame-Options', 'deny')
+  res.header('X-Content-Type-Options', 'nosniff')
+  next()
+})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'server/views'))
 app.set('view engine', 'jade')
