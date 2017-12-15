@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import '../App.css'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import ThinTicketContainerWatch from './ThinTicketContainerWatch'
-import InputWatch from './InputWatch'
 import Intro from './Intro'
-import { Button, ButtonGroup, Grid, Row, Col } from 'react-bootstrap'
+import { Button, Grid, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
 
 class NumberApp extends Component {
@@ -116,60 +114,58 @@ class NumberApp extends Component {
 
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Intro />
-          <h1 style={{ textAlign: 'center' }}>
-            <div className="dropdown">
-              <button className="dropbtn" onClick={() => this.showDropDown()}>
-                {this.state.proper}
-              </button>
-              {!this.state.hideDropdown && (
-                <div className="dropdown-content">
-                  {this.state.currPropDrop.map((propDrop, index) => (
-                    <a
-                      key={index}
-                      onClick={() =>
-                        this.handleDropDownClick(
-                          propDrop,
-                          this.state.currNameDrop[index]
-                        )
-                      }
-                      value={propDrop}
-                    >
-                      {propDrop}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-            Number Generator
-          </h1>
-          <Grid>
-            {this.state.tickets.map((ticket, index) => (
-              <div key={index}>
-                <Row className="show-grid">
-                  <ThinTicketContainerWatch ticket={ticket} />
-
-                  <Col xs={1} md={1} xsHidden>
-                    <Button
-                      style={{ height: '173px' }}
-                      onClick={() => this.removeTicket(index)}
-                    >
-                      X
-                    </Button>
-                  </Col>
-                </Row>
-              </div>
-            ))}
-          </Grid>
-          <div style={{ textAlign: 'center' }}>
-            <button className="addTicket" onClick={() => this.addTicket(false)}>
-              + Add Ticket
+      <div className="App">
+        <Intro />
+        <h1 style={{ textAlign: 'center' }}>
+          <div className="dropdown">
+            <button className="dropbtn" onClick={() => this.showDropDown()}>
+              {this.state.proper}
             </button>
+            {!this.state.hideDropdown && (
+              <div className="dropdown-content">
+                {this.state.currPropDrop.map((propDrop, index) => (
+                  <a
+                    key={index}
+                    onClick={() =>
+                      this.handleDropDownClick(
+                        propDrop,
+                        this.state.currNameDrop[index]
+                      )
+                    }
+                    value={propDrop}
+                  >
+                    {propDrop}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
+          Number Generator
+        </h1>
+        <Grid>
+          {this.state.tickets.map((ticket, index) => (
+            <div key={index}>
+              <Row className="show-grid">
+                <ThinTicketContainerWatch ticket={ticket} />
+
+                <Col xs={1} md={1} xsHidden>
+                  <Button
+                    style={{ height: '173px' }}
+                    onClick={() => this.removeTicket(index)}
+                  >
+                    X
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          ))}
+        </Grid>
+        <div style={{ textAlign: 'center' }}>
+          <button className="addTicket" onClick={() => this.addTicket(false)}>
+            + Add Ticket
+          </button>
         </div>
-      </Router>
+      </div>
     )
   }
 }
