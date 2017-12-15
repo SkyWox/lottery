@@ -45,8 +45,10 @@ class InputWatch extends Component {
     axios({
       method: 'patch',
       url: '/db/users/' + this.state.userID,
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+      },
       data: {
-        token: sessionStorage.getItem('jwtToken'),
         contactwin: win,
         contactlose: lose
       }
@@ -63,9 +65,11 @@ class InputWatch extends Component {
     let token = sessionStorage.getItem('jwtToken')
     if (token) {
       axios({
-        method: 'post',
+        method: 'get',
         url: '/db/users/me/from/token',
-        data: { token: sessionStorage.getItem('jwtToken') }
+        headers: {
+          Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+        }
       }).then(res => {
         if (res.status !== 200) {
           console.log('token field error')
@@ -94,9 +98,11 @@ class InputWatch extends Component {
       () => this.setState({ isLoggedIn: true })
     )
     axios({
-      method: 'post',
+      method: 'get',
       url: '/db/users/' + data.user.userid,
-      data: { token: data.token }
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+      }
     }).then(res => {
       if (res.data.tickets) {
         const tickets = res.data.tickets
@@ -189,13 +195,15 @@ class InputWatch extends Component {
     axios({
       method: 'post',
       url: '/db/users/' + this.state.userID + '/tickets',
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+      },
       data: {
         numbers: nums,
         vanillanums: vanillanums,
         specialnums: specialnums,
         lottodate: drawDate,
-        lottoname: this.state.lottoname,
-        token: sessionStorage.getItem('jwtToken')
+        lottoname: this.state.lottoname
       }
     })
       .then(res => {
@@ -247,7 +255,9 @@ class InputWatch extends Component {
     axios({
       method: 'delete',
       url: '/db/users/' + this.state.userID + '/tickets/' + ticket.ticketID,
-      auth: { token: sessionStorage.getItem('jwtToken') }
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+      }
     })
       .then(res => {
         if (res.status === 204) {

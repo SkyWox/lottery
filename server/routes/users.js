@@ -37,8 +37,8 @@ router.post('/signin', function(req, res, next) {
     .catch(error => console.log(error))
 })
 
-router.post('/me/from/token', function(req, res, next) {
-  var token = req.body.token || req.query.token
+router.get('/me/from/token', function(req, res, next) {
+  const token = req.header('Authorization').slice(7)
   if (!token) {
     return res.status(402).json({ message: 'Must pass token' })
   }
@@ -57,7 +57,8 @@ router.post('/me/from/token', function(req, res, next) {
 })
 
 router.use((req, res, next) => {
-  jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, user) {
+  const token = req.header('Authorization').slice(7)
+  jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
     if (err) {
       return res.status(401).json({
         success: false,
@@ -68,21 +69,6 @@ router.use((req, res, next) => {
       next()
     }
   })
-})
-
-router.post('/:userID/', (req, res, next) => {
-  return User.findById(req.params.userID, {
-    include: [
-      {
-        model: Ticket,
-        as: 'tickets'
-      }
-    ],
-    order: [
-      ['createdAt', 'DESC'],
-      [{ model: Ticket, as: 'tickets' }, 'createdAt', 'ASC']
-    ]
-  }).then(tickets => res.status(200).send(tickets))
 })
 
 router.post('/', userController.create)
