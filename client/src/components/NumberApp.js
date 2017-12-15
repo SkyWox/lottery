@@ -145,9 +145,9 @@ class NumberApp extends Component {
             </div>
             Number Generator
           </h1>
-          {this.state.tickets.map((ticket, index) => (
-            <div key={index}>
-              <Grid>
+          <Grid>
+            {this.state.tickets.map((ticket, index) => (
+              <div key={index}>
                 <Row className="show-grid">
                   <ThinTicketContainerWatch ticket={ticket} />
 
@@ -160,9 +160,9 @@ class NumberApp extends Component {
                     </Button>
                   </Col>
                 </Row>
-              </Grid>
-            </div>
-          ))}
+              </div>
+            ))}
+          </Grid>
           <div style={{ textAlign: 'center' }}>
             <button className="addTicket" onClick={() => this.addTicket(false)}>
               + Add Ticket
