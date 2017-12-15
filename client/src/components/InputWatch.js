@@ -42,36 +42,38 @@ class InputWatch extends Component {
     var lose = false
     if (emailPref.indexOf(1) !== -1) win = true
     if (emailPref.indexOf(2) !== -1) lose = true
-    axios
-      .patch('/db/users/' + this.state.userID, {
+    axios({
+      method: 'patch',
+      url: '/db/users/' + this.state.userID,
+      data: {
         token: sessionStorage.getItem('jwtToken'),
         contactwin: win,
         contactlose: lose
-      })
-      .then(res => {
-        if (res.status !== 200) {
-          console.log('user update error')
-        } else {
-          this.setState({ emailPref })
-        }
-      })
+      }
+    }).then(res => {
+      if (res.status !== 200) {
+        console.log('user update error')
+      } else {
+        this.setState({ emailPref })
+      }
+    })
   }
 
   initialLogin() {
     let token = sessionStorage.getItem('jwtToken')
     if (token) {
-      axios
-        .post('/db/users/me/from/token', {
-          token: sessionStorage.getItem('jwtToken')
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            console.log('token field error')
-            this.setState({ isLoggedIn: false })
-          } else {
-            this.fetchUserData(res.data)
-          }
-        })
+      axios({
+        method: 'post',
+        url: '/db/users/me/from/token',
+        data: { token: sessionStorage.getItem('jwtToken') }
+      }).then(res => {
+        if (res.status !== 200) {
+          console.log('token field error')
+          this.setState({ isLoggedIn: false })
+        } else {
+          this.fetchUserData(res.data)
+        }
+      })
     } else {
       this.setState({ isLoggedIn: false })
     }
@@ -91,19 +93,19 @@ class InputWatch extends Component {
       },
       () => this.setState({ isLoggedIn: true })
     )
-    axios
-      .post('/db/users/' + data.user.userid, {
-        token: data.token
-      })
-      .then(res => {
-        if (res.data.tickets) {
-          const tickets = res.data.tickets
-          //Best way to iterate over object & avoid scope issues
-          for (var i = 0; i < tickets.length; i++) {
-            this.addTicketToState(tickets[i], { saved: true })
-          }
+    axios({
+      method: 'post',
+      url: '/db/users/' + data.user.userid,
+      data: { token: data.token }
+    }).then(res => {
+      if (res.data.tickets) {
+        const tickets = res.data.tickets
+        //Best way to iterate over object & avoid scope issues
+        for (var i = 0; i < tickets.length; i++) {
+          this.addTicketToState(tickets[i], { saved: true })
         }
-      })
+      }
+    })
   }
 
   addTicketToState(ticket, obj) {
@@ -184,15 +186,18 @@ class InputWatch extends Component {
     })
 
     //submit to DB
-    axios
-      .post('/db/users/' + this.state.userID + '/tickets', {
+    axios({
+      method: 'post',
+      url: '/db/users/' + this.state.userID + '/tickets',
+      data: {
         numbers: nums,
         vanillanums: vanillanums,
         specialnums: specialnums,
         lottodate: drawDate,
         lottoname: this.state.lottoname,
         token: sessionStorage.getItem('jwtToken')
-      })
+      }
+    })
       .then(res => {
         var saved = false
         if (res.status === 201) {
@@ -238,11 +243,11 @@ class InputWatch extends Component {
   }
 
   removeTicket(ticket, index) {
-    axios
-      .delete(
-        '/db/users/' + this.state.userID + '/tickets/' + ticket.ticketID,
-        { token: sessionStorage.getItem('jwtToken') }
-      )
+    axios({
+      method: 'delete',
+      url: '/db/users/' + this.state.userID + '/tickets/' + ticket.ticketID,
+      auth: { token: sessionStorage.getItem('jwtToken') }
+    })
       .then(res => {
         if (res.status === 204) {
           var ticketArray = this.state.tickets
