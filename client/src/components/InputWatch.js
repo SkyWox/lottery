@@ -13,7 +13,10 @@ import {
   FormGroup,
   DropdownButton,
   MenuItem,
-  Well
+  Well,
+  Grid,
+  Row,
+  Col
 } from 'react-bootstrap'
 import NumberFormat from 'react-number-format'
 import axios from 'axios'
@@ -107,11 +110,12 @@ class InputWatch extends Component {
     var ticketArray = this.state.tickets
     ticketArray.unshift({
       key: ticketArray.length,
+      lottoname: ticket.lottoname,
       numbers: ticket.numbers,
       vanillanums: ticket.vanillanums,
       specialnums: ticket.specialnums,
-      lottodate: moment(ticket.lottodate).format('dddd, MMM Do YYYY'),
-      lottoname: ticket.lottoname,
+      lottodate: moment(ticket.lottodate).format('ddd, MMM Do YYYY'),
+      ticketID: ticket.id,
       saved: ticket.saved || obj.saved
     })
     this.setState({ tickets: ticketArray })
@@ -233,6 +237,26 @@ class InputWatch extends Component {
       .filter(i => i)
   }
 
+  removeTicket(ticket, index) {
+    axios
+      .delete(
+        '/db/users/' + this.state.userID + '/tickets/' + ticket.ticketID,
+        { token: sessionStorage.getItem('jwtToken') }
+      )
+      .then(res => {
+        if (res.status === 204) {
+          var ticketArray = this.state.tickets
+          ticketArray.splice(index, 1)
+          this.setState({ tickets: ticketArray })
+        } else console.log('ticket could not be deleted')
+      })
+      .catch(err => console.log(err))
+  }
+
+  reLogIn() {
+    this.setState({ hideLoginModal: false })
+  }
+
   handleLogOut() {
     this.setState({
       showLogOut: true,
@@ -240,10 +264,6 @@ class InputWatch extends Component {
       tickets: [],
       hideLoginModal: true
     })
-  }
-
-  reLogIn() {
-    this.setState({ hideLoginModal: false })
   }
 
   render() {
@@ -323,11 +343,24 @@ class InputWatch extends Component {
           </form>
         </Well>
         <div>
-          {this.state.tickets.map((ticket, index) => (
-            <div key={index}>
-              <ThinTicketContainerWatch ticket={ticket} />
-            </div>
-          ))}
+          <Grid>
+            {this.state.tickets.map((ticket, index) => (
+              <div key={index}>
+                <Row className="show-grid">
+                  <ThinTicketContainerWatch ticket={ticket} />
+
+                  <Col xs={1} md={1} xsHidden>
+                    <Button
+                      style={{ height: '173px' }}
+                      onClick={() => this.removeTicket(ticket, index)}
+                    >
+                      X
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            ))}
+          </Grid>
         </div>
       </div>
     )

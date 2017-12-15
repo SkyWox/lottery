@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import '../App.css'
-import moment from 'moment'
 import LottoLogo from './LottoLogo'
 import { Panel, Col } from 'react-bootstrap'
 
@@ -10,7 +9,7 @@ class ThinTicketContainer extends Component {
   logoGen = (
     <div>
       <LottoLogo lottoname={this.props.ticket.lottoname} />
-      {this.props.ticket.date}
+      {this.props.ticket.lottodate}
     </div>
   )
 
