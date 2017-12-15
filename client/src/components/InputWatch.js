@@ -243,6 +243,7 @@ class InputWatch extends Component {
   }
 
   removeTicket(ticket, index) {
+    //need to move all calls to auth headers
     axios({
       method: 'delete',
       url: '/db/users/' + this.state.userID + '/tickets/' + ticket.ticketID,
