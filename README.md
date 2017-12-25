@@ -1,7 +1,6 @@
 # MintWins.com
 
-![Travis](https://travis-ci.org/SkyWox/lottery.svg?branch=master)
-![Heroku](https://heroku-badge.herokuapp.com/?app=lottofresh)
+[![Travis](https://travis-ci.org/SkyWox/lottery.svg?branch=master)](https://travis-ci.org/SkyWox/lottery)
 
 # Features
 
@@ -19,7 +18,7 @@ Make sure you have keys for the following accounts and update them in `.envs` fi
 
 ## Run
 
-Heroku can run this out of the box as long as you have the .env variables set uo and a postgres database provisioned.
+Heroku can run this out of the box as long as you have the .env variables mirrored to the Heroku config and a postgres database provisioned.
 
 To run the site locally for development, run this in ../lottery/:
 
@@ -38,6 +37,14 @@ npm run start
 This will use react-script's daemon to restart on source changes.
 
 ## Built with
+
+* NodeJS
+* React + React Router
+* Express
+* Postgres
+* [JSON Web Token](https://github.com/auth0/node-jsonwebtoken)
+* [Cron for Node](https://github.com/kelektiv/node-cron)
+* [Mailgun](https://mailgun.com)
 
 ## License
 
