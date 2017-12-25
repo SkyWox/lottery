@@ -1,3 +1,8 @@
+# MintWins.com
+
+![Travis](https://travis-ci.org/SkyWox/lottery.svg?branch=master)
+![Heroku](https://heroku-badge.herokuapp.com/?app=lottofresh)
+
 # Features
 
 # Running a Copy
@@ -31,6 +36,8 @@ npm run start
 ```
 
 This will use react-script's daemon to restart on source changes.
+
+## Built with
 
 ## License
 
