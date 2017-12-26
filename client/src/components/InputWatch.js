@@ -68,7 +68,7 @@ class InputWatch extends Component {
         method: 'get',
         url: '/db/users/me/from/token',
         headers: {
-          Authorization: 'Bearer ' + sessionStorage.getItem('jwtToken')
+          Authorization: 'Bearer ' + token
         }
       }).then(res => {
         if (res.status !== 200) {
@@ -340,6 +340,7 @@ class InputWatch extends Component {
                       }
                     }}
                   />
+                  <br />
                   {this.state.needhelp && (
                     <span>
                       Please enter numbers in the format {this.state.format}
