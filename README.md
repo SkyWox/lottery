@@ -2,6 +2,12 @@
 
 [![Travis](https://travis-ci.org/SkyWox/lottery.svg?branch=master)](https://travis-ci.org/SkyWox/lottery)
 
+# Key features
+
+* Automatic monitoring of lottery results
+* Email notifications after each drawing
+* Random lottery ticket generators
+
 # System architecture
 
 ![System Architecture](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/MintWinsFlowChart.png)
@@ -26,9 +32,25 @@ Once a user is logged in, the browser uses an API to retrieve all the user's tic
 
 ### Adding tickets
 
+The user adds tickets via a form at the top of the page. The form will parse the numbers to make sure they obey the rules of the corresponding game and sort them in ascending order. The input uses unobtrusive formatting to mimic the spacing of numbers on the ticket and reduce input error.
+
+Once the user inputs a ticket, it is added to the ticket database and the component's state, triggering a render of a child ticket component.
+
+## Ticket checking
+
+Ticket checking is managed by CronJobs on the server. It is currently configured to check the [Powerball results page](http://www.powerball.com/powerball/pb_nbr_history.asp) after drawings (Wednesday and Saturday nights). It will pull the results into the ticket database and trigger the email job to notify users.
+
+By default each user will get emailed only if they have a winning ticket. Users can opt-in to be notified of losers as well, or opt-out of all emails on their `/watch/` page.
+
+The email job will take an HTML template and update it with information about the user and ticket and send it using the Mailgun API.
+
 ## Ticket generator
 
-# Running a copy
+The ticket generator can generate random tickets for several lotteries using a custom API. The React component comes preloaded with three lotteries, but will check for new supported lotteries after mounting.
+
+The server uses a JSON file for storing the rules of the lottery, which allows a single point of update for the entire platform. This allows new lotteries to be added with minimal technical debt.
+
+# Running a clone
 
 ## Setup
 
@@ -60,7 +82,7 @@ npm run start
 
 This will use react-script's daemon to restart on source changes.
 
-## Built with
+# Built with
 
 * NodeJS
 * React + React Router
@@ -70,6 +92,6 @@ This will use react-script's daemon to restart on source changes.
 * [Cron for Node](https://github.com/kelektiv/node-cron)
 * [Mailgun](https://mailgun.com)
 
-## License
+# License
 
 MIT © [Skylar Wilcox](http://skywox.me)
