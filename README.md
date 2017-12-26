@@ -4,7 +4,7 @@
 
 # System Architecture
 
-![System Architecture](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/Mint_Wins_Architecture.svg?sanitize=true)
+![System Architecture](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/MintWinsFlowChart.png)
 
 # Features
 
