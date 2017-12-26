@@ -2,6 +2,10 @@
 
 [![Travis](https://travis-ci.org/SkyWox/lottery.svg?branch=master)](https://travis-ci.org/SkyWox/lottery)
 
+# System Architecture
+
+![System Architecture](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/Mint_Wins_Architecture.svg?sanitize=true)
+
 # Features
 
 # Running a Copy
@@ -20,7 +24,7 @@ Make sure you have keys for the following accounts and update them in `.envs` fi
 
 Heroku can run this out of the box as long as you have the .env variables mirrored to the Heroku config and a postgres database provisioned.
 
-To run the site locally for development, run this in ../lottery/:
+To run the site locally for development, run this in the top level directory:
 
 ```
 npm run start:dev
@@ -28,7 +32,7 @@ npm run start:dev
 
 This will start a nodemon that will restart the server when it detects changes to the source.
 
-To run the client, open another terminal and cd to the /client/ directory and run:
+To run the client, open another terminal and cd to the `/client/` directory and run:
 
 ```
 npm run start
