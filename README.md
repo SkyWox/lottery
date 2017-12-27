@@ -24,11 +24,15 @@ When the user navigates to the `/watch/` page, the site checks for a JSON web to
 
 If the user does not have a valid JSON web token, they are presented with a modal allowing them to log in or create an account. When they successfully login or create an account, the server will generate a JSON web token for the browser to store.
 
+![Login Modal](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/MintWins/LoginWithToken.gif)
+
 To make previewing the site easier, the form also has a button allowing the user to log into a demo account. This automates submitting an email/password combo and functions like a normal login.
 
 ### Fetching tickets
 
 Once a user is logged in, the browser uses an API to retrieve all the user's tickets. Each ticket is rendered as a seperate React component. The tickets' states are managed from the main `/watch/` component, allowing tickets to be created and destroyed during interactions with the API. For instance, adding a ticket will create both the child component and insert a matching value into the ticket database.
+
+![Ticket](https://raw.githubusercontent.com/SkyWox/skywox.github.io/master/images/MintWins/Ticket.png)
 
 ### Adding tickets
 
