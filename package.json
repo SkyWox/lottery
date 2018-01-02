@@ -18,7 +18,7 @@
     "express": "^4.16.2",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.1.0",
-    "mailgun-js": "^0.14.0",
+    "mailgun-js": "^0.14.1",
     "moment": "^2.20.1",
     "morgan": "^1.9.0",
     "pg": "^6.4.2",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "dotenv": "^4.0.0",
-    "nodemon": "^1.14.3",
+    "nodemon": "^1.14.7",
     "prettier": "^1.9.2"
   },
   "nodemonConfig": {
