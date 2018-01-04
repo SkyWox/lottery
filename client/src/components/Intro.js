@@ -7,10 +7,6 @@ class LottoLogo extends Component {
     this.setState({ hide: true })
   }
 
-  hideBehind() {
-    sessionStorage.setItem('hideBehind', true)
-  }
-
   render() {
     return (
       <div>
@@ -26,9 +22,6 @@ class LottoLogo extends Component {
                 </p>
                 <p>It also generates random lottery numbers</p>
                 <Button onClick={() => this.hideIntro()}>Ok, got it</Button>
-                <Button onClick={() => this.hideBehind()}>
-                  Hide the behind the scenes info
-                </Button>
               </Jumbotron>
             </div>
           )}
