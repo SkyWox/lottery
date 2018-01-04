@@ -4,9 +4,10 @@
 
 # Key features
 
-* Automatic monitoring of lottery results
-* Email notifications after each drawing
-* Random lottery ticket generators
+* Add tickets and the site will automatically email you if a ticket wins
+* Winning numbers updated after each drawing
+* SSL-encrypted with JWToken authentication
+* Built in random lottery ticket generator
 
 # System architecture
 
