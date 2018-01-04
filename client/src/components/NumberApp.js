@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../App.css'
-import ThinTicketContainerWatch from './ThinTicketContainerWatch'
+import TicketContainer from './TicketContainer'
 import Intro from './Intro'
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
@@ -146,7 +146,7 @@ class NumberApp extends Component {
           {this.state.tickets.map((ticket, index) => (
             <div key={index}>
               <Row className="show-grid">
-                <ThinTicketContainerWatch ticket={ticket} />
+                <TicketContainer ticket={ticket} />
 
                 <Col xs={1} md={1} xsHidden>
                   <Button

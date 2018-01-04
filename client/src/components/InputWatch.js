@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../App.css'
 import moment from 'moment'
-import ThinTicketContainerWatch from './ThinTicketContainerWatch'
+import TicketContainer from './TicketContainer'
 import LottoLogo from './LottoLogo'
 import LogIn from './LogIn'
 import {
@@ -364,7 +364,7 @@ class InputWatch extends Component {
             {this.state.tickets.map((ticket, index) => (
               <div key={index}>
                 <Row className="show-grid">
-                  <ThinTicketContainerWatch ticket={ticket} />
+                  <TicketContainer ticket={ticket} />
 
                   <Col xs={1} md={1} xsHidden>
                     <Button
