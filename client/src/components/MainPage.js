@@ -2,19 +2,22 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NumberApp from './NumberApp'
 import InputWatch from './InputWatch'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 const MainPage = () => (
   <Router>
-    <div>
-      <ButtonGroup justified={true}>
-        <Link to="/">
-          <Button>Number Generator</Button>
-        </Link>
-        <Link to="/watch">
-          <Button>My Tickets</Button>
-        </Link>
-      </ButtonGroup>
+    <div className="navbar">
+      <Link to="/">
+        <Button className="navbutton" bsSize="large">
+          Number Generator
+        </Button>
+      </Link>
+
+      <Link to="/watch">
+        <Button className="navbutton" bsSize="large">
+          My Tickets
+        </Button>
+      </Link>
 
       <Route exact path="/" component={NumberApp} />
       <Route path="/watch" component={InputWatch} />
