@@ -1,180 +1,189 @@
 .App {
-	font-family: 'Open Sans', sans-serif;
-	width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  width: 100%;
 }
 
 h1 {
-	font-weight: normal;
-	font-size: 42px;
+  font-weight: normal;
+  font-size: 42px;
+}
+
+.navbar {
+  padding-left: 10px;
+  padding-top: 15px;
+}
+
+.navbutton {
+  margin-left: 5px;
 }
 
 .modal-container {
-	position: relative;
+  position: relative;
 }
 .modal-container .modal,
 .modal-container .modal-backdrop {
-	position: absolute;
+  position: absolute;
 }
 
 .ticketContainer button {
-	list-style-type: none;
-	font-size: 12px;
-	font-weight: 500;
-	border-width: 1px;
-	line-height: 18px;
-	height: 26px;
-	top: 10px;
-	border: 2px solid #666;
-	border-radius: 12px;
-	border-width: 1px;
-	padding-top,: 3px;
-	padding-left,: 13px;
-	right: 15px;
-	margin-right: 15px;
-	background-color: #fff;
+  list-style-type: none;
+  font-size: 12px;
+  font-weight: 500;
+  border-width: 1px;
+  line-height: 18px;
+  height: 26px;
+  top: 10px;
+  border: 2px solid #666;
+  border-radius: 12px;
+  border-width: 1px;
+  padding-top,: 3px;
+  padding-left,: 13px;
+  right: 15px;
+  margin-right: 15px;
+  background-color: #fff;
 }
 
 .ticketTitle {
-	float: left;
-	font-size: 16px;
-	font-weight: bold;
-	padding-right: 25px;
+  float: left;
+  font-size: 16px;
+  font-weight: bold;
+  padding-right: 25px;
 }
 
 .ticketContainer {
-	border-radius: 5px;
-	border-color: rgb(211, 211, 211);
-	border-width: 1px;
-	border-style: solid;
-	padding: 15px;
-	height: 111px;
-	margin: 20px;
+  border-radius: 5px;
+  border-color: rgb(211, 211, 211);
+  border-width: 1px;
+  border-style: solid;
+  padding: 15px;
+  height: 111px;
+  margin: 20px;
 }
 
 .ticketContainer:hover {
-	border-color: rgb(254, 201, 23);
-	border-style: solid;
-	border-width: 1;
+  border-color: rgb(254, 201, 23);
+  border-style: solid;
+  border-width: 1;
 }
 
 .mint {
-	border-color: rgb(173, 232, 134);
+  border-color: rgb(173, 232, 134);
 }
 
 .mint:hover {
-	border-color: rgb(77, 175, 12);
+  border-color: rgb(77, 175, 12);
 }
 
 .numberContainer {
-	float: left;
+  float: left;
 }
 
 .numberCircle {
-	/*box-sizing: border-box;
+  /*box-sizing: border-box;
   border-radius: 50%;*/
-	width: 45px;
-	height: 45px;
-	font-size: 20px;
-	text-align: center;
-	margin: 7.5px 2px 7.5px 0;
-	background-size: 135px 45px;
-	line-height: 45px;
-	/*border: 2px solid #666;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  text-align: center;
+  margin: 7.5px 2px 7.5px 0;
+  background-size: 135px 45px;
+  line-height: 45px;
+  /*border: 2px solid #666;
   height: 38px;*/
-	font-weight: 700;
-	list-style-type: none;
-	float: left;
-	/*line-height: 35px;*/
+  font-weight: 700;
+  list-style-type: none;
+  float: left;
+  /*line-height: 35px;*/
 }
 
 .vanillaNum {
-	background: url('circles.png') no-repeat;
+  background: url('circles.png') no-repeat;
 }
 
 .specialNum {
-	margin-left: 8px;
-	color: #fff;
-	background: url('circles.png') no-repeat;
-	background-position: -90px 0;
+  margin-left: 8px;
+  color: #fff;
+  background: url('circles.png') no-repeat;
+  background-position: -90px 0;
 }
 
 .shuffle {
-	background-color: #fff;
-	color: rgb(243, 100, 6);
-	border-color: rgba(0, 0, 0, 0.17);
-	float: left;
+  background-color: #fff;
+  color: rgb(243, 100, 6);
+  border-color: rgba(0, 0, 0, 0.17);
+  float: left;
 }
 
 .shuffle:hover {
-	border-color: rgb(243, 100, 6);
+  border-color: rgb(243, 100, 6);
 }
 
 .addTicket {
-	font-size: 12px;
-	font-weight: 500;
-	border-width: 1px;
-	line-height: 18px;
-	height: 26px;
-	top: 10px;
-	border: 2px solid #666;
-	border-radius: 12px;
-	border-width: 1px;
-	padding-top,: 3px;
-	padding-left,: 13px;
-	background-color: #fff;
-	color: rgb(0, 153, 51);
-	border-color: rgba(0, 0, 0, 0.17);
-	right: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  border-width: 1px;
+  line-height: 18px;
+  height: 26px;
+  top: 10px;
+  border: 2px solid #666;
+  border-radius: 12px;
+  border-width: 1px;
+  padding-top,: 3px;
+  padding-left,: 13px;
+  background-color: #fff;
+  color: rgb(0, 153, 51);
+  border-color: rgba(0, 0, 0, 0.17);
+  right: 15px;
 }
 
 .addTicket:hover {
-	border-color: rgb(173, 232, 134);
+  border-color: rgb(173, 232, 134);
 }
 
 /* Dropdown Button */
 .dropbtn {
-	background-color: rgb(217, 237, 247);
-	font-size: 42px;
-	border: none;
-	cursor: pointer;
+  background-color: rgb(217, 237, 247);
+  font-size: 42px;
+  border: none;
+  cursor: pointer;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
-	position: relative;
-	display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #fff;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
-	right: 0;
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-	background-color: rgb(217, 237, 247);
+  background-color: rgb(217, 237, 247);
 }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
-	display: block;
+  display: block;
 }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-	background-color: rgb(188, 232, 241);
+  background-color: rgb(188, 232, 241);
 }
