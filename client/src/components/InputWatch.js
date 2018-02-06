@@ -286,16 +286,22 @@ class InputWatch extends Component {
     return (
       <div>
         {this.state.isLoggedIn && (
-          <div>
+          <div className="navbar">
             <Button onClick={() => this.handleLogOut()}>Log Out</Button>
-            <ToggleButtonGroup
-              type="checkbox"
-              value={this.state.emailPref}
-              onChange={this.onChange}
-            >
-              <ToggleButton value={1}>Email me if I win</ToggleButton>
-              <ToggleButton value={2}>Email me if I lose</ToggleButton>
-            </ToggleButtonGroup>
+            <span className="navbutton">
+              <ToggleButtonGroup
+                type="checkbox"
+                value={this.state.emailPref}
+                onChange={this.onChange}
+              >
+                <ToggleButton className="navbutton" value={1}>
+                  Email me if I win
+                </ToggleButton>
+                <ToggleButton className="navbutton" value={2}>
+                  Email me if I lose
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </span>
           </div>
         )}
         {!this.state.hideLoginModal && (
