@@ -319,7 +319,7 @@ class InputWatch extends Component {
               controlId="formBasicText"
               validationState={this.getValidationState()}
             >
-              <ControlLabel>Add a ticket to watch</ControlLabel>
+              <ControlLabel>Add a ticket to watch |</ControlLabel>
               <DropdownButton
                 value={this.state.lottoname}
                 title="Select Lottery"
