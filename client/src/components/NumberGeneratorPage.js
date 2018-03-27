@@ -5,7 +5,7 @@ import Intro from './Intro'
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
 
-class NumberApp extends Component {
+class NumberGeneratorPage extends Component {
   componentWillMount() {
     this.setState({
       //default list to speed loading
@@ -170,4 +170,4 @@ class NumberApp extends Component {
   }
 }
 
-export default NumberApp
+export default NumberGeneratorPage

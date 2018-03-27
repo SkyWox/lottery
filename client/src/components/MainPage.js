@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import NumberApp from './NumberApp'
-import InputWatch from './InputWatch'
+import NumberGeneratorPage from './NumberGeneratorPage'
+import WatchPage from './WatchPage'
 import { Button } from 'react-bootstrap'
 
 const MainPage = () => (
@@ -19,8 +19,8 @@ const MainPage = () => (
         </Button>
       </Link>
 
-      <Route exact path="/" component={NumberApp} />
-      <Route path="/watch" component={InputWatch} />
+      <Route exact path="/" component={NumberGeneratorPage} />
+      <Route path="/watch" component={WatchPage} />
     </div>
   </Router>
 )

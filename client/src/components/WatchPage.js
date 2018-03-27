@@ -21,7 +21,7 @@ import {
 import NumberFormat from 'react-number-format'
 import axios from 'axios'
 
-class InputWatch extends Component {
+class WatchPage extends Component {
   // Initialize state for powerball
   state = {
     userID: 1,
@@ -390,4 +390,4 @@ class InputWatch extends Component {
   }
 }
 
-export default InputWatch
+export default WatchPage
