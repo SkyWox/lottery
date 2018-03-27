@@ -3,14 +3,14 @@ import { Jumbotron, Button } from 'react-bootstrap'
 class LottoLogo extends Component {
   state = { hide: false }
   hideIntro() {
-    sessionStorage.setItem('hideIntro', true)
+    localStorage.setItem('hideIntro', true)
     this.setState({ hide: true })
   }
 
   render() {
     return (
       <div>
-        {!sessionStorage.getItem('hideIntro', true) &&
+        {!localStorage.getItem('hideIntro', true) &&
           !sessionStorage.getItem('jwtToken') &&
           !this.state.hide && (
             <div style={{ textAlign: 'center' }}>

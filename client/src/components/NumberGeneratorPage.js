@@ -5,20 +5,39 @@ import Intro from './Intro'
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
 
+var removeByIndex = (array, index) => array.filter((_, i) => i !== index)
+
+var defaultInfo = {
+  powerball: 'Powerball',
+  superlplus: 'Super Lotto Plus',
+  megamil: 'Mega Millions'
+}
+
+//now I need to make the import map similiarly
+//and map the array to the drop downs
+
 class NumberGeneratorPage extends Component {
+  defaultNameDrop = ['powerball', 'superlplus', 'megamil']
+  defaultPropDrop = ['Powerball', 'Super Lotto Plus', 'Mega Millions']
+
   componentWillMount() {
     this.setState({
-      //default list to speed loading
-      nameDrop: ['powerball', 'superlplus', 'megamil'],
-      propDrop: ['Powerball', 'Super Lotto Plus', 'Mega Millions'],
-      currNameDrop: ['superlplus', 'megamil'],
-      currPropDrop: ['Super Lotto Plus', 'Mega Millions'],
+      nameDrop: this.defaultNameDrop,
+      propDrop: this.defaultPropDrop,
+      currNameDrop: removeByIndex(
+        this.defaultNameDrop,
+        this.defaultNameDrop.indexOf(this.defaultName)
+      ),
+      currPropDrop: removeByIndex(
+        this.defaultPropDrop,
+        this.defaultPropDrop.indexOf(this.defaultProper)
+      ),
       tickets: [],
-      lottoname: 'powerball',
-      proper: 'Powerball',
+      lottoname: Object.entries(defaultInfo)[0][0],
+      proper: Object.entries(defaultInfo)[0][1],
       hideDropdown: true
     })
-    if (!sessionStorage.getItem('hideIntro')) {
+    if (!localStorage.getItem('hideIntro')) {
       this.setState({ hideIntro: false })
     } else {
       this.setState({ hideIntro: true })
@@ -93,14 +112,16 @@ class NumberGeneratorPage extends Component {
 
   hideIntro() {
     this.setState({ hideIntro: true })
-    sessionStorage.setItem('hideIntro', true)
+    localStorage.setItem('hideIntro', true)
   }
 
-  handleDropDownClick(propDrop, nameDrop) {
+  handleDropDownClick(pickedLottoName) {
     this.setState(
       {
-        lottoname: nameDrop,
-        proper: propDrop,
+        lottoname: pickedLottoName,
+        proper: this.defaultProper,
+        currPropDrop: this.state.currPropDrop,
+        currNameDrop: this.state.currNameDrop,
         hideDropdown: true,
         tickets: []
       },
@@ -127,10 +148,7 @@ class NumberGeneratorPage extends Component {
                   <a
                     key={index}
                     onClick={() =>
-                      this.handleDropDownClick(
-                        propDrop,
-                        this.state.currNameDrop[index]
-                      )
+                      this.handleDropDownClick(this.state.currNameDrop[index])
                     }
                     value={propDrop}
                   >
