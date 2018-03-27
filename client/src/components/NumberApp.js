@@ -148,7 +148,7 @@ class NumberApp extends Component {
               <Row className="show-grid">
                 <TicketContainer ticket={ticket} />
 
-                <Col xs={1} md={1} xsHidden>
+                <Col xs={1} md={1}>
                   <Button
                     style={{ height: '173px' }}
                     onClick={() => this.removeTicket(index)}

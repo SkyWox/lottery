@@ -6,8 +6,8 @@ import { Panel, Col } from 'react-bootstrap'
 class TicketContainer extends Component {
   render() {
     return (
-      <div style={{ align: 'center' }}>
-        <Col xs={12} sm={7} md={5}>
+      <div>
+        <Col xs={10} sm={7} smOffset={2} md={5} mdOffset={3}>
           <Panel
             bsStyle={
               this.props.ticket.lottoname === 'powerball' ? 'info' : 'success'
