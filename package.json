@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "bcrypt": "^2.0.0",
+    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",
